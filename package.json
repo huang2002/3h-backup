@@ -1,0 +1,38 @@
+{
+  "name": "3h-backup",
+  "version": "0.1.0",
+  "description": "A personal backup helper.",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": "src/cli.js",
+  "scripts": {
+    "help": "node ./src/cli.js --help",
+    "test:auto": "node --test ./test/",
+    "test:manual": "cd ./test/root/ && node ../../src/cli.js",
+    "typecheck": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huang2002/3h-backup.git"
+  },
+  "keywords": [
+    "backup",
+    "sync",
+    "3h"
+  ],
+  "author": "3h",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huang2002/3h-backup/issues"
+  },
+  "homepage": "https://github.com/huang2002/3h-backup#readme",
+  "devDependencies": {
+    "@types/node": "^20.10.4",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "3h-cli": "^4.0.0",
+    "3h-validate": "^0.7.0",
+    "fast-glob": "^3.3.2"
+  }
+}
