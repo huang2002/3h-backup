@@ -1,0 +1,1 @@
+/root/src-0/foo/file-2.txt
