@@ -25,6 +25,7 @@ export const getBackupList = async (root, options, output) => {
     }
   }
 
+  // TODO: fix star patterns in ignore patterns
   const ignorePatterns = await readIgnoreFile(
     root,
     options.ignoreFiles,
@@ -33,7 +34,7 @@ export const getBackupList = async (root, options, output) => {
 
   const searchPatterns = [
     '*',
-    ...ignorePatterns.map((pattern) => {
+    ...ignorePatterns.filter(Boolean).map((pattern) => {
       if (pattern[0] === '!') {
         return pattern.slice(1);
       } else {
@@ -45,6 +46,7 @@ export const getBackupList = async (root, options, output) => {
   const matchedEntries = await glob(searchPatterns, {
     cwd: root,
     deep: 1,
+    onlyFiles: false,
     markDirectories: true,
   });
 
