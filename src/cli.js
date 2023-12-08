@@ -47,5 +47,5 @@ program
   })
   .catch((reason) => {
     console.error(reason);
-    process.exitCode = 1;
+    process.kill(process.pid);
   });
