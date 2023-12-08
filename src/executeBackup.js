@@ -12,6 +12,7 @@ import path from 'node:path';
 import HIter from '3h-iter';
 import { getBackupList } from './getBackupList.js';
 import { backupFile } from './backupFile.js';
+import pavePath from 'pave-path';
 
 /**
  * @param {import('./type.js').BackupConfig} config
@@ -46,12 +47,77 @@ export const executeBackup = async (config, base) => {
         throw new BackupError('Source path does not exists: ' + sourcePath);
       }
 
-      const backupList = await getBackupList(sourcePath, {
+      const sourceList = await getBackupList(sourcePath, {
         listFiles,
         encoding,
       });
-      backupList.sort();
-      taskFileLists[i] = backupList;
+      sourceList.sort();
+
+      const replace = taskReplaceOptions[i];
+      const filter = taskFilterOptions[i];
+
+      /**
+       * @type {string[]}
+       */
+      const destinationList = [];
+      if (filter !== 'source' || replace !== 'all') {
+        const destinationPath = path.resolve(base, task.destination);
+        if (!existsSync(destinationPath)) {
+          if (filter === 'destination') {
+            throw new BackupError(
+              'Destination path does not exists: ' + destinationPath,
+            );
+          } else {
+            await pavePath(destinationPath);
+          }
+        } else {
+          await getBackupList(
+            destinationPath,
+            {
+              listFiles,
+              encoding,
+            },
+            destinationList,
+          );
+          destinationList.sort();
+        }
+      }
+
+      /**
+       * @type {readonly string[]}
+       */
+      let fileList;
+      switch (filter) {
+        case 'source': {
+          fileList = sourceList;
+          break;
+        }
+
+        case 'destination': {
+          fileList = destinationList;
+          break;
+        }
+
+        case 'intersection': {
+          const destinationSet = new Set(destinationList);
+          fileList = sourceList.filter((filePath) =>
+            destinationSet.has(filePath),
+          );
+          break;
+        }
+
+        case 'union': {
+          const destinationSet = new Set(destinationList);
+          fileList = destinationList
+            .concat(
+              sourceList.filter((filePath) => !destinationSet.has(filePath)),
+            )
+            .sort();
+          break;
+        }
+      }
+
+      taskFileLists[i] = fileList;
     }),
   );
 
@@ -91,7 +157,7 @@ export const executeBackup = async (config, base) => {
   console.log();
   console.log('Backup started.');
 
-  for (const [task, name, replace, filter, sourceList] of HIter.zip(
+  for (const [task, name, replace, filter, fileList] of HIter.zip(
     config.tasks,
     taskNames,
     taskReplaceOptions,
@@ -99,62 +165,6 @@ export const executeBackup = async (config, base) => {
     taskFileLists,
   )) {
     console.log(`Executing task "${name}"...`);
-
-    /**
-     * @type {string[]}
-     */
-    const destinationList = [];
-    if (filter !== 'source' || replace !== 'all') {
-      const destinationPath = path.resolve(base, task.destination);
-      if (!existsSync(destinationPath)) {
-        throw new BackupError(
-          'Destination path does not exists: ' + destinationPath,
-        );
-      }
-      await getBackupList(
-        destinationPath,
-        {
-          listFiles,
-          encoding,
-        },
-        destinationList,
-      );
-      destinationList.sort();
-    }
-
-    /**
-     * @type {readonly string[]}
-     */
-    let fileList;
-    switch (filter) {
-      case 'source': {
-        fileList = sourceList;
-        break;
-      }
-
-      case 'destination': {
-        fileList = destinationList;
-        break;
-      }
-
-      case 'intersection': {
-        const destinationSet = new Set(destinationList);
-        fileList = sourceList.filter((filePath) =>
-          destinationSet.has(filePath),
-        );
-        break;
-      }
-
-      case 'union': {
-        const destinationSet = new Set(destinationList);
-        fileList = destinationList
-          .concat(
-            sourceList.filter((filePath) => !destinationSet.has(filePath)),
-          )
-          .sort();
-        break;
-      }
-    }
 
     const sourcePath = path.resolve(base, task.source);
     const destinationPath = path.resolve(base, task.destination);
