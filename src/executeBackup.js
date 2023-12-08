@@ -169,17 +169,27 @@ export const executeBackup = async (config, base) => {
     const sourcePath = path.resolve(base, task.source);
     const destinationPath = path.resolve(base, task.destination);
 
-    // TODO: pave the destination path if needed
-    await Promise.all(
-      fileList.map((filePath) =>
-        backupFile({
-          source: path.join(sourcePath, filePath),
-          destination: path.join(destinationPath, filePath),
-          replace,
-          filter,
-        }),
-      ),
-    );
+    let lastDirPath = '';
+    for (const filePath of fileList) {
+      // Since file list has been sorted,
+      // parent directory should be ahead.
+      const dirPath = path.dirname(filePath);
+      if (dirPath !== lastDirPath) {
+        if (lastDirPath && dirPath.startsWith(lastDirPath)) {
+          await pavePath(dirPath, lastDirPath);
+        } else {
+          await pavePath(dirPath);
+        }
+        lastDirPath = dirPath;
+      }
+
+      await backupFile({
+        source: path.join(sourcePath, filePath),
+        destination: path.join(destinationPath, filePath),
+        replace,
+        filter,
+      });
+    }
   }
 
   console.log('Backup succeeded.');
