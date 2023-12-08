@@ -38,7 +38,7 @@ export const backupFilterValidator = types.string({
 });
 
 /**
- * @typedef BackupTask
+ * @typedef BackupTaskConfig
  * @property {string} [name]
  * @property {string} source
  * @property {string} destination
@@ -46,7 +46,7 @@ export const backupFilterValidator = types.string({
  * @property {BackupFilter} [filter]
  */
 
-export const taskValidator = types.dict({
+export const taskConfigValidator = types.dict({
   pattern: {
     name: optional(stringValidator),
     source: stringValidator,
@@ -57,8 +57,18 @@ export const taskValidator = types.dict({
 });
 
 /**
+ * @typedef BackupTask
+ * @property {string} name
+ * @property {string} sourcePath
+ * @property {string} destinationPath
+ * @property {BackupReplace} replace
+ * @property {BackupFilter} filter
+ * @property {readonly string[]} fileList
+ */
+
+/**
  * @typedef BackupConfig
- * @property {readonly BackupTask[]} tasks
+ * @property {readonly BackupTaskConfig[]} tasks
  * @property {BufferEncoding} [encoding=DEFAULT_ENCODING]
  * @property {readonly string[]} [listFiles=DEFAULT_LIST_FILES] sorted by priority, descending
  * @property {BackupReplace} [defaultReplace]
@@ -69,7 +79,7 @@ export const taskValidator = types.dict({
 export const configValidator = types.dict({
   pattern: {
     tasks: types.array({
-      pattern: taskValidator,
+      pattern: taskConfigValidator,
     }),
     listFiles: optional(
       types.array({

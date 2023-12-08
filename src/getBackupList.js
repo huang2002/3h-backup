@@ -7,32 +7,34 @@ import path from 'node:path';
  * @typedef GetBackupListOptions
  * @property {readonly string[]} listFiles
  * @property {BufferEncoding} encoding
+ * @property {string} root
  */
 
 /**
- * @param {string} root
+ * @param {string} prefix
  * @param {GetBackupListOptions} options
  * @param {string[]} [output]
- * @returns {Promise<string[]>} accumulated results
+ * @returns {Promise<string[]>} accumulated paths, relative to `root`
  */
-export const getBackupList = async (root, options, output) => {
-  if ((await fs.stat(root)).isFile()) {
+export const getBackupList = async (prefix, options, output) => {
+  const basePath = path.join(options.root, prefix);
+  if ((await fs.stat(basePath)).isFile()) {
     if (output) {
-      output.push(root);
+      output.push(basePath);
       return output;
     } else {
-      return [root];
+      return [basePath];
     }
   }
 
   const listedPatterns = await readListFile(
-    root,
+    basePath,
     options.listFiles,
     options.encoding,
   );
   const searchPatterns = listedPatterns.length ? listedPatterns : '*';
   const matchedEntries = await glob(searchPatterns, {
-    cwd: root,
+    cwd: basePath,
     deep: 1,
     onlyFiles: false,
     markDirectories: true,
@@ -40,7 +42,7 @@ export const getBackupList = async (root, options, output) => {
 
   const _output = output ?? [];
   for await (const entryName of matchedEntries) {
-    const entryPath = path.join(root, entryName);
+    const entryPath = path.join(prefix, entryName);
     if (entryName.endsWith('/')) {
       await getBackupList(entryPath, options, _output);
     } else {

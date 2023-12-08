@@ -1,5 +1,7 @@
 import { existsSync, promises as fs } from 'node:fs';
 
+// TODO: add action field to tasks and change this file to executeAction.js
+
 /**
  * @typedef BackupFileOptions
  * @property {string} source
