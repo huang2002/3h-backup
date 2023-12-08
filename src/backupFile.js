@@ -12,24 +12,28 @@ import { existsSync, promises as fs } from 'node:fs';
  * @param {BackupFileOptions} options
  * @returns {Promise<void>}
  */
-export const backupFile = (options) => {
+export const backupFile = async (options) => {
   const sourceExists = existsSync(options.source);
   const destinationExists = existsSync(options.destination);
 
-  switch (options.replace) {
-    case 'newer': {
-      // TODO:
-      break;
-    }
+  if (options.replace !== 'all' && destinationExists) {
+    const sourceStats = await fs.stat(options.source);
+    const destinationStats = await fs.stat(options.destination);
 
-    case 'older': {
-      // TODO:
-      break;
-    }
+    switch (options.replace) {
+      case 'mtime': {
+        if (sourceStats.mtimeMs <= destinationStats.mtimeMs) {
+          return;
+        }
+        break;
+      }
 
-    case 'all': {
-      // TODO:
-      break;
+      case 'ctime': {
+        if (sourceStats.ctimeMs <= destinationStats.ctimeMs) {
+          return;
+        }
+        break;
+      }
     }
   }
 

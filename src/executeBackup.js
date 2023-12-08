@@ -11,6 +11,7 @@ import process from 'node:process';
 import path from 'node:path';
 import { zip } from '3h-iter';
 import { getBackupList } from './getBackupList.js';
+import { backupFile } from './backupFile.js';
 
 /**
  * @param {import('./type.js').BackupConfig} config
@@ -36,17 +37,23 @@ export const executeBackup = async (config, base) => {
   /**
    * @type {(readonly string[])[]} sorted per task
    */
-  const taskFileLists = [];
+  const taskFileLists = Array(config.tasks.length);
 
-  for await (const task of config.tasks) {
-    const sourcePath = path.resolve(base, task.source);
-    if (!existsSync(sourcePath)) {
-      throw new BackupError('Source path does not exists: ' + sourcePath);
-    }
+  await Promise.all(
+    config.tasks.map(async (task, i) => {
+      const sourcePath = path.resolve(base, task.source);
+      if (!existsSync(sourcePath)) {
+        throw new BackupError('Source path does not exists: ' + sourcePath);
+      }
 
-    const backupList = await getBackupList(sourcePath, { listFiles, encoding });
-    taskFileLists.push(backupList.sort());
-  }
+      const backupList = await getBackupList(sourcePath, {
+        listFiles,
+        encoding,
+      });
+      backupList.sort();
+      taskFileLists[i] = backupList;
+    }),
+  );
 
   if (!config.skipConfirm) {
     console.log('Backup Tasks');
@@ -149,7 +156,20 @@ export const executeBackup = async (config, base) => {
       }
     }
 
-    // TODO:
+    const sourcePath = path.resolve(base, task.source);
+    const destinationPath = path.resolve(base, task.destination);
+
+    // TODO: pave the destination path if needed
+    await Promise.all(
+      fileList.map((filePath) =>
+        backupFile({
+          source: path.join(sourcePath, filePath),
+          destination: path.join(destinationPath, filePath),
+          replace,
+          filter,
+        }),
+      ),
+    );
   }
 
   console.log('Backup succeeded.');

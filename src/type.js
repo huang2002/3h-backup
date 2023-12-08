@@ -14,14 +14,14 @@ export const optional = (validator) =>
 
 /**
  * @typedef {(
- *   | 'newer'
- *   | 'older'
+ *   | 'mtime'
+ *   | 'ctime'
  *   | 'all'
  * )} BackupReplace
  */
 
 export const backupReplaceValidator = types.string({
-  pattern: /^newer|older|all$/,
+  pattern: /^mtime|ctime|all$/,
 });
 
 /**

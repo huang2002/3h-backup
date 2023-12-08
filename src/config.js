@@ -5,7 +5,7 @@ export const DEFAULT_LIST_FILES = ['.3h-backup-list'];
 /**
  * @type {import('./type.js').BackupReplace}
  */
-export const DEFAULT_REPLACE = 'newer';
+export const DEFAULT_REPLACE = 'mtime';
 
 /**
  * @type {import('./type.js').BackupFilter}
