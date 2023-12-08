@@ -2,7 +2,7 @@ import HType from '3h-validate';
 
 export const DEFAULT_CONFIG_PATH = '3h-backup.json';
 export const DEFAULT_ENCODING = 'utf-8';
-export const DEFAULT_IGNORE_FILES = ['.3h-backup-ignore', '.gitignore'];
+export const DEFAULT_LIST_FILES = ['.3h-backup-list'];
 
 const { types } = HType;
 const stringValidator = types.string();
@@ -33,7 +33,7 @@ export const taskValidator = types.dict({
  * @typedef BackupConfig
  * @property {readonly BackupTask[]} tasks
  * @property {BufferEncoding} [encoding=DEFAULT_ENCODING]
- * @property {readonly string[]} [ignoreFiles=DEFAULT_IGNORE_FILES] sorted by priority, descending
+ * @property {readonly string[]} [listFiles=DEFAULT_LIST_FILES] sorted by priority, descending
  * @property {boolean} [skipConfirm=false]
  */
 
@@ -42,7 +42,7 @@ export const configValidator = types.dict({
     tasks: types.array({
       pattern: taskValidator,
     }),
-    ignoreFiles: optional(
+    listFiles: optional(
       types.array({
         pattern: stringValidator,
       }),

@@ -1,11 +1,11 @@
 import { promises as fs } from 'node:fs';
-import { readIgnoreFile } from '../helpers/readIgnoreFile.js';
+import { readListFile } from './readListFile.js';
 import glob from 'fast-glob';
 import path from 'node:path';
 
 /**
  * @typedef GetBackupListOptions
- * @property {readonly string[]} ignoreFiles
+ * @property {readonly string[]} listFiles
  * @property {BufferEncoding} encoding
  */
 
@@ -25,24 +25,12 @@ export const getBackupList = async (root, options, output) => {
     }
   }
 
-  // TODO: fix star patterns in ignore patterns
-  const ignorePatterns = await readIgnoreFile(
+  const listedPatterns = await readListFile(
     root,
-    options.ignoreFiles,
+    options.listFiles,
     options.encoding,
   );
-
-  const searchPatterns = [
-    '*',
-    ...ignorePatterns.filter(Boolean).map((pattern) => {
-      if (pattern[0] === '!') {
-        return pattern.slice(1);
-      } else {
-        return '!' + pattern;
-      }
-    }),
-  ];
-
+  const searchPatterns = listedPatterns.length ? listedPatterns : '*';
   const matchedEntries = await glob(searchPatterns, {
     cwd: root,
     deep: 1,
@@ -51,9 +39,9 @@ export const getBackupList = async (root, options, output) => {
   });
 
   const _output = output ?? [];
-  for await (const entry of matchedEntries) {
-    const entryPath = path.join(root, entry);
-    if (entryPath.endsWith('/')) {
+  for await (const entryName of matchedEntries) {
+    const entryPath = path.join(root, entryName);
+    if (entryName.endsWith('/')) {
       await getBackupList(entryPath, options, _output);
     } else {
       _output.push(entryPath);

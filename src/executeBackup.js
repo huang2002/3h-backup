@@ -2,7 +2,7 @@ import { existsSync } from 'fs';
 import { BackupError } from './error.js';
 import {
   DEFAULT_ENCODING,
-  DEFAULT_IGNORE_FILES,
+  DEFAULT_LIST_FILES,
   getBackupList,
 } from './index.js';
 import { createInterface } from 'node:readline/promises';
@@ -29,7 +29,7 @@ export const executeBackup = async (config, base) => {
     await getBackupList(
       sourcePath,
       {
-        ignoreFiles: config.ignoreFiles ?? DEFAULT_IGNORE_FILES,
+        listFiles: config.listFiles ?? DEFAULT_LIST_FILES,
         encoding: config.encoding ?? DEFAULT_ENCODING,
       },
       backupList,

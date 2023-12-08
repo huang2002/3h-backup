@@ -49,6 +49,6 @@ program
     }
   })
   .catch((reason) => {
-    console.error(String(reason));
+    console.error(reason);
     process.exitCode = 1;
   });
