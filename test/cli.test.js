@@ -3,10 +3,11 @@ import { execSync } from 'node:child_process';
 import path from 'node:path';
 import { test } from 'node:test';
 import { fileURLToPath } from 'node:url';
+import process from 'node:process';
 
 test('cli functionality', () => {
-  execSync(`node ../src/cli.js -c ./root/backup-config.json`, {
-    cwd: path.dirname(fileURLToPath(import.meta.url)),
-  });
-  assert(true);
+  process.chdir(path.dirname(fileURLToPath(import.meta.url)));
+  execSync('node ../src/cli.js -c ./root/backup-config.json');
+  // TODO:
+  assert(false, 'unimplemented');
 });
