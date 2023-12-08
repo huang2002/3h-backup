@@ -13,7 +13,7 @@ import path from 'node:path';
  * @param {string} root
  * @param {GetBackupListOptions} options
  * @param {string[]} [output]
- * @returns {Promise<readonly string[]>} accumulated results
+ * @returns {Promise<string[]>} accumulated results
  */
 export const getBackupList = async (root, options, output) => {
   if ((await fs.stat(root)).isFile()) {

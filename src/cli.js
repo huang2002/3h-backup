@@ -2,7 +2,7 @@ import { Program } from '3h-cli';
 import process from 'node:process';
 import fs from 'node:fs';
 import { DEFAULT_CONFIG_PATH, DEFAULT_ENCODING } from './config.js';
-import { readConfigFile } from './helpers/readConfigFile.js';
+import { readConfigFile } from './readConfigFile.js';
 import { executeBackup } from './executeBackup.js';
 import path from 'node:path';
 
@@ -43,10 +43,7 @@ program
       args.getOption('--encoding')[0] ?? DEFAULT_ENCODING
     );
     const config = await readConfigFile(configPath, encoding);
-    const done = await executeBackup(config, path.dirname(configPath));
-    if (done) {
-      console.log('Backup succeeded.');
-    }
+    await executeBackup(config, path.dirname(configPath));
   })
   .catch((reason) => {
     console.error(reason);

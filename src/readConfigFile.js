@@ -1,11 +1,10 @@
 import { promises as fs, existsSync } from 'node:fs';
-import { BackupError } from '../error.js';
-import { configValidator } from '../config.js';
+import { BackupError, configValidator } from './type.js';
 
 /**
  * @param {string} configFilePath
  * @param {BufferEncoding} encoding
- * @returns {Promise<import('../config.js').BackupConfig>} parsed config
+ * @returns {Promise<import('./type.js').BackupConfig>} parsed config
  */
 
 export const readConfigFile = async (configFilePath, encoding) => {
@@ -14,7 +13,7 @@ export const readConfigFile = async (configFilePath, encoding) => {
   }
 
   /**
-   * @type {import('../config.js').BackupConfig}
+   * @type {import('./type.js').BackupConfig}
    */
   let config;
   try {

@@ -1,6 +1,6 @@
 import { promises as fs, existsSync } from 'node:fs';
 import path from 'node:path';
-import { BackupError } from '../error.js';
+import { BackupError } from './type.js';
 
 /**
  * @param {string} root
