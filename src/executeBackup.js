@@ -9,7 +9,7 @@ import {
 import { createInterface } from 'node:readline/promises';
 import process from 'node:process';
 import path from 'node:path';
-import { zip } from '3h-iter';
+import HIter from '3h-iter';
 import { getBackupList } from './getBackupList.js';
 import { backupFile } from './backupFile.js';
 
@@ -58,7 +58,7 @@ export const executeBackup = async (config, base) => {
   if (!config.skipConfirm) {
     console.log('Backup Tasks');
     console.log('------------');
-    for (const [name, replace, filter, fileList] of zip(
+    for (const [name, replace, filter, fileList] of HIter.zip(
       taskNames,
       taskReplaceOptions,
       taskFilterOptions,
@@ -91,7 +91,7 @@ export const executeBackup = async (config, base) => {
   console.log();
   console.log('Backup started.');
 
-  for (const [task, name, replace, filter, sourceList] of zip(
+  for (const [task, name, replace, filter, sourceList] of HIter.zip(
     config.tasks,
     taskNames,
     taskReplaceOptions,
