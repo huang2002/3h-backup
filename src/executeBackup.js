@@ -6,10 +6,8 @@ import {
 } from './config.js';
 import { createInterface } from 'node:readline/promises';
 import process from 'node:process';
-import path from 'node:path';
-import { backupFile } from './backupFile.js';
-import pavePath from 'pave-path';
 import { generateTask } from './generateTask.js';
+import { executeTask } from './executeTask.js';
 
 /**
  * @param {import('./type.js').BackupConfig} config
@@ -65,28 +63,7 @@ export const executeBackup = async (config, base) => {
 
   for (const task of tasks) {
     console.log(`Executing task "${task.name}"...`);
-
-    let lastDirPath = '';
-    for (const filePath of task.fileList) {
-      // Since file list has been sorted,
-      // parent directory should be ahead.
-      const dirPath = path.dirname(filePath);
-      if (dirPath !== lastDirPath) {
-        if (lastDirPath && dirPath.startsWith(lastDirPath)) {
-          await pavePath(dirPath, lastDirPath);
-        } else {
-          await pavePath(dirPath);
-        }
-        lastDirPath = dirPath;
-      }
-
-      await backupFile({
-        source: path.join(task.sourcePath, filePath),
-        destination: path.join(task.destinationPath, filePath),
-        replace: task.replace,
-        filter: task.filter,
-      });
-    }
+    await executeTask(task);
   }
 
   console.log('Backup succeeded.');

@@ -2,6 +2,7 @@ import path from 'node:path';
 import { getBackupList } from './getBackupList.js';
 import { existsSync } from 'node:fs';
 import { BackupError } from './type.js';
+import { getAction } from './getAction.js';
 
 /**
  * @typedef GenerateTaskOptions
@@ -67,32 +68,43 @@ export const generateTask = async (options) => {
   /**
    * @type {readonly string[]}
    */
-  let fileList;
+  let filePathList;
   switch (filter) {
     case 'source': {
-      fileList = sourceList;
+      filePathList = sourceList;
       break;
     }
 
     case 'destination': {
-      fileList = destinationList;
+      filePathList = destinationList;
       break;
     }
 
     case 'intersection': {
       const destinationSet = new Set(destinationList);
-      fileList = sourceList.filter((filePath) => destinationSet.has(filePath));
+      filePathList = sourceList.filter((filePath) =>
+        destinationSet.has(filePath),
+      );
       break;
     }
 
     case 'union': {
       const destinationSet = new Set(destinationList);
-      fileList = destinationList
+      filePathList = destinationList
         .concat(sourceList.filter((filePath) => !destinationSet.has(filePath)))
         .sort();
       break;
     }
   }
+
+  const fileList = await Promise.all(
+    filePathList.map(async (filePath) => {
+      const source = path.join(sourcePath, filePath);
+      const destination = path.join(destinationPath, filePath);
+      const action = await getAction({ source, destination, replace, filter });
+      return { source, destination, action };
+    }),
+  );
 
   return {
     name,

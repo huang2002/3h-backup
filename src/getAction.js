@@ -1,9 +1,7 @@
 import { existsSync, promises as fs } from 'node:fs';
 
-// TODO: add action field to tasks and change this file to executeAction.js
-
 /**
- * @typedef BackupFileOptions
+ * @typedef GetActionOptions
  * @property {string} source
  * @property {string} destination
  * @property {import('./type.js').BackupReplace} replace
@@ -11,10 +9,10 @@ import { existsSync, promises as fs } from 'node:fs';
  */
 
 /**
- * @param {BackupFileOptions} options
- * @returns {Promise<void>}
+ * @param {GetActionOptions} options
+ * @returns {Promise<import('./type.js').BackupTaskFileAction>}
  */
-export const backupFile = async (options) => {
+export const getAction = async (options) => {
   const sourceExists = existsSync(options.source);
   const destinationExists = existsSync(options.destination);
 
@@ -25,14 +23,14 @@ export const backupFile = async (options) => {
     switch (options.replace) {
       case 'mtime': {
         if (sourceStats.mtimeMs <= destinationStats.mtimeMs) {
-          return;
+          return 'none';
         }
         break;
       }
 
       case 'ctime': {
         if (sourceStats.ctimeMs <= destinationStats.ctimeMs) {
-          return;
+          return 'none';
         }
         break;
       }
@@ -40,9 +38,8 @@ export const backupFile = async (options) => {
   }
 
   if (sourceExists) {
-    return fs.copyFile(options.source, options.destination);
+    return 'copy';
   } else {
-    return fs.rm(options.destination);
-    // TODO: remove empty folders
+    return 'remove';
   }
 };

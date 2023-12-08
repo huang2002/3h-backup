@@ -57,13 +57,28 @@ export const taskConfigValidator = types.dict({
 });
 
 /**
+ * @typedef {(
+ *   | 'copy'
+ *   | 'remove'
+ *   | 'none'
+ * )} BackupTaskFileAction
+ */
+
+/**
+ * @typedef BackupTaskFileInfo
+ * @property {string} source
+ * @property {string} destination
+ * @property {BackupTaskFileAction} action
+ */
+
+/**
  * @typedef BackupTask
  * @property {string} name
  * @property {string} sourcePath
  * @property {string} destinationPath
  * @property {BackupReplace} replace
  * @property {BackupFilter} filter
- * @property {readonly string[]} fileList
+ * @property {readonly BackupTaskFileInfo[]} fileList
  */
 
 /**
