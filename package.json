@@ -8,7 +8,7 @@
   "scripts": {
     "help": "node ./src/cli.js --help",
     "test:auto": "cd ./test/scripts && node --test",
-    "test:manual": "node ./test/manualTest.js",
+    "test:manual": "node ./test/scripts/manualTest.js",
     "typecheck": "tsc"
   },
   "repository": {

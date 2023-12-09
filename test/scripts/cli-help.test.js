@@ -1,10 +1,10 @@
 import assert from 'node:assert';
 import { execSync } from 'node:child_process';
 import { test } from 'node:test';
-import { initTestDir } from './common.js';
+import { cdTest } from './common.js';
 
 test('cli help info', () => {
-  initTestDir();
+  cdTest();
 
   const cliOutput = execSync('node ../src/cli.js --help', {
     encoding: 'utf-8',

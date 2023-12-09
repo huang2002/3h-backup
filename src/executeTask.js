@@ -13,7 +13,8 @@ export const executeTask = async (task) => {
     const dirPath = path.dirname(fileInfo.destination);
     if (dirPath !== lastDirPath) {
       if (lastDirPath && dirPath.startsWith(lastDirPath)) {
-        await pavePath(dirPath, lastDirPath);
+        const pathToPave = path.relative(lastDirPath, dirPath);
+        await pavePath(pathToPave, lastDirPath);
       } else {
         await pavePath(dirPath);
       }
@@ -22,10 +23,12 @@ export const executeTask = async (task) => {
 
     switch (fileInfo.action) {
       case 'copy': {
-        return fs.copyFile(fileInfo.source, fileInfo.destination);
+        await fs.copyFile(fileInfo.source, fileInfo.destination);
+        break;
       }
       case 'remove': {
-        return fs.rm(fileInfo.destination);
+        await fs.rm(fileInfo.destination);
+        break;
       }
       case 'none': {
         // do nothing
