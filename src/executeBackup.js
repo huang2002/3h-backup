@@ -17,8 +17,8 @@ import { executeTask } from './executeTask.js';
 export const executeBackup = async (config, base) => {
   const listFiles = config.listFiles ?? DEFAULT_LIST_FILES;
   const encoding = config.encoding ?? DEFAULT_ENCODING;
-  const defaultReplace = config.defaultReplace ?? DEFAULT_REPLACE;
-  const defaultFilter = config.defaultFilter ?? DEFAULT_FILTER;
+  const defaultReplace = config.replace ?? DEFAULT_REPLACE;
+  const defaultFilter = config.filter ?? DEFAULT_FILTER;
 
   /**
    * @type {import('./type.js').BackupTask[]}

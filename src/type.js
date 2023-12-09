@@ -84,10 +84,10 @@ export const taskConfigValidator = types.dict({
 /**
  * @typedef BackupConfig
  * @property {readonly BackupTaskConfig[]} tasks
- * @property {BufferEncoding} [encoding=DEFAULT_ENCODING]
- * @property {readonly string[]} [listFiles=DEFAULT_LIST_FILES] sorted by priority, descending
- * @property {BackupReplace} [defaultReplace]
- * @property {BackupFilter} [defaultFilter]
+ * @property {BufferEncoding} [encoding]
+ * @property {readonly string[]} [listFiles] sorted by priority, descending
+ * @property {BackupReplace} [replace]
+ * @property {BackupFilter} [filter]
  * @property {boolean} [skipConfirm=false]
  */
 
@@ -102,9 +102,9 @@ export const configValidator = types.dict({
       }),
     ),
     encoding: optional(stringValidator),
+    replace: optional(backupReplaceValidator),
+    filter: optional(backupFilterValidator),
     skipConfirm: optional(booleanValidator),
-    defaultReplace: optional(backupReplaceValidator),
-    defaultFilter: optional(backupFilterValidator),
   },
 });
 
