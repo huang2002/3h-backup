@@ -13,6 +13,7 @@ import { getAction } from './getAction.js';
  * @property {BufferEncoding} encoding
  * @property {import('./type.js').BackupReplace} defaultReplace
  * @property {import('./type.js').BackupFilter} defaultFilter
+ * @property {boolean} defaultRemoveEmptyDirectory
  */
 
 /**
@@ -32,6 +33,8 @@ export const generateTask = async (options) => {
   const name = config.name ?? options.defaultName;
   const replace = config.replace ?? options.defaultReplace;
   const filter = config.filter ?? options.defaultFilter;
+  const removeEmptyDirectory =
+    config.removeEmptyDirectory ?? options.defaultRemoveEmptyDirectory;
 
   const sourceList = await getBackupList('', {
     root: sourcePath,
@@ -112,6 +115,7 @@ export const generateTask = async (options) => {
     destinationPath,
     replace,
     filter,
+    removeEmptyDirectory,
     fileList,
   };
 };

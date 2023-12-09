@@ -44,6 +44,7 @@ export const backupFilterValidator = types.string({
  * @property {string} destination
  * @property {BackupReplace} [replace]
  * @property {BackupFilter} [filter]
+ * @property {boolean} [removeEmptyDirectory]
  */
 
 export const taskConfigValidator = types.dict({
@@ -53,6 +54,7 @@ export const taskConfigValidator = types.dict({
     destination: stringValidator,
     replace: optional(backupReplaceValidator),
     filter: optional(backupFilterValidator),
+    removeEmptyDirectory: optional(booleanValidator),
   },
 });
 
@@ -78,6 +80,7 @@ export const taskConfigValidator = types.dict({
  * @property {string} destinationPath
  * @property {BackupReplace} replace
  * @property {BackupFilter} filter
+ * @property {boolean} removeEmptyDirectory
  * @property {readonly BackupTaskFileInfo[]} fileList
  */
 
@@ -88,6 +91,7 @@ export const taskConfigValidator = types.dict({
  * @property {readonly string[]} [listFiles] sorted by priority, descending
  * @property {BackupReplace} [replace]
  * @property {BackupFilter} [filter]
+ * @property {boolean} [removeEmptyDirectory]
  * @property {boolean} [skipConfirm=false]
  */
 
@@ -104,6 +108,7 @@ export const configValidator = types.dict({
     encoding: optional(stringValidator),
     replace: optional(backupReplaceValidator),
     filter: optional(backupFilterValidator),
+    removeEmptyDirectory: optional(booleanValidator),
     skipConfirm: optional(booleanValidator),
   },
 });

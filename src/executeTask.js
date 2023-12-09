@@ -6,7 +6,12 @@ import pavePath from 'pave-path';
  * @param {import('./type.js').BackupTask} task
  */
 export const executeTask = async (task) => {
+  /**
+   * @type {Set<string> | null}
+   */
+  const maybeEmptyPaths = task.removeEmptyDirectory ? new Set() : null;
   let lastDirPath = '';
+
   for (const fileInfo of task.fileList) {
     // Since file list has been sorted,
     // parent directory should be ahead.
@@ -28,11 +33,22 @@ export const executeTask = async (task) => {
       }
       case 'remove': {
         await fs.rm(fileInfo.destination);
+        if (task.removeEmptyDirectory) {
+          /** @type {Set<string>} */ (maybeEmptyPaths).add(dirPath);
+        }
         break;
       }
       case 'none': {
         // do nothing
         break;
+      }
+    }
+  }
+
+  if (task.removeEmptyDirectory) {
+    for (const dirPath of /** @type {Set<string>} */ (maybeEmptyPaths)) {
+      if ((await fs.readdir(dirPath)).length === 0) {
+        await fs.rmdir(dirPath);
       }
     }
   }

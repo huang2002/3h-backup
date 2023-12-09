@@ -2,6 +2,7 @@ import {
   DEFAULT_ENCODING,
   DEFAULT_FILTER,
   DEFAULT_LIST_FILES,
+  DEFAULT_REMOVE_EMPTY_DIRECTORY,
   DEFAULT_REPLACE,
 } from './config.js';
 import { createInterface } from 'node:readline/promises';
@@ -19,6 +20,8 @@ export const executeBackup = async (config, base) => {
   const encoding = config.encoding ?? DEFAULT_ENCODING;
   const defaultReplace = config.replace ?? DEFAULT_REPLACE;
   const defaultFilter = config.filter ?? DEFAULT_FILTER;
+  const defaultRemoveEmptyDirectory =
+    config.removeEmptyDirectory ?? DEFAULT_REMOVE_EMPTY_DIRECTORY;
 
   /**
    * @type {import('./type.js').BackupTask[]}
@@ -33,6 +36,7 @@ export const executeBackup = async (config, base) => {
         encoding,
         defaultReplace,
         defaultFilter,
+        defaultRemoveEmptyDirectory,
       }),
     ),
   );
