@@ -7,8 +7,8 @@
   "bin": "src/cli.js",
   "scripts": {
     "help": "node ./src/cli.js --help",
-    "test:auto": "cd test && node --test",
-    "test:manual": "cd ./test/root/ && node ../../src/cli.js",
+    "test:auto": "cd ./test/scripts && node --test",
+    "test:manual": "node ./test/manualTest.js",
     "typecheck": "tsc"
   },
   "repository": {

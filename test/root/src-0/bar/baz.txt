@@ -1,1 +1,0 @@
-/root/src-0/bar/baz.txt

@@ -1,9 +1,0 @@
-{
-  "skipConfirm": true,
-  "tasks": [
-    {
-      "source": "src-1",
-      "destination": "dest-1"
-    }
-  ]
-}

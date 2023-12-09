@@ -2,8 +2,11 @@ import assert from 'node:assert';
 import { execSync } from 'node:child_process';
 import { test } from 'node:test';
 import { existsSync, rmSync } from 'node:fs';
+import { initTestDir } from './common.js';
 
 test('cli help info', () => {
+  initTestDir();
+
   const cliOutput = execSync('node ../src/cli.js --help', {
     encoding: 'utf-8',
   });
@@ -25,6 +28,8 @@ test('cli help info', () => {
 });
 
 test.todo('cli functionality', () => {
+  initTestDir();
+
   if (existsSync('./root/dest-1')) {
     rmSync('./root/dest-1', { recursive: true });
   }
