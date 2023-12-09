@@ -7,7 +7,7 @@
   "bin": "src/cli.js",
   "scripts": {
     "help": "node ./src/cli.js --help",
-    "test:auto": "node --test ./test/",
+    "test:auto": "cd test && node --test",
     "test:manual": "cd ./test/root/ && node ../../src/cli.js",
     "typecheck": "tsc"
   },
