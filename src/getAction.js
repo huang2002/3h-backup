@@ -17,6 +17,10 @@ export const getAction = async (options) => {
   const destinationExists = existsSync(options.destination);
 
   if (options.replace !== 'all' && destinationExists) {
+    if (!sourceExists) {
+      return 'none';
+    }
+
     const sourceStats = await fs.stat(options.source);
     const destinationStats = await fs.stat(options.destination);
 
