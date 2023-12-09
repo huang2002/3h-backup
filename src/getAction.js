@@ -5,7 +5,6 @@ import { existsSync, promises as fs } from 'node:fs';
  * @property {string} source
  * @property {string} destination
  * @property {import('./type.js').BackupReplace} replace
- * @property {import('./type.js').BackupFilter} filter
  */
 
 /**
@@ -16,11 +15,11 @@ export const getAction = async (options) => {
   const sourceExists = existsSync(options.source);
   const destinationExists = existsSync(options.destination);
 
-  if (options.replace !== 'all' && destinationExists) {
-    if (!sourceExists) {
-      return 'none';
-    }
+  if (!sourceExists) {
+    return 'remove';
+  }
 
+  if (options.replace !== 'all' && destinationExists) {
     const sourceStats = await fs.stat(options.source);
     const destinationStats = await fs.stat(options.destination);
 
@@ -41,9 +40,5 @@ export const getAction = async (options) => {
     }
   }
 
-  if (sourceExists) {
-    return 'copy';
-  } else {
-    return 'remove';
-  }
+  return 'copy';
 };
