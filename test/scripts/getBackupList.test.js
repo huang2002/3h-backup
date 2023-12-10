@@ -2,7 +2,7 @@ import test from 'node:test';
 import { TEST_ROOT_DIR, cdTest, setFileStructure } from './common.js';
 import assert from 'node:assert';
 import { getBackupList } from '../../src/getBackupList.js';
-import path from 'node:path/posix';
+import path from 'node:path';
 import { DEFAULT_LIST_FILES } from '../../src/config.js';
 
 test('getBackupList', async () => {
