@@ -27,13 +27,12 @@ export const getBackupList = async (prefix, options, output) => {
     }
   }
 
-  const listedPatterns = await readListFile(
+  const listPatterns = await readListFile(
     basePath,
     options.listFiles,
     options.encoding,
   );
-  const searchPatterns = listedPatterns.length ? listedPatterns : '*';
-  const matchedEntries = await glob(searchPatterns, {
+  const matchedEntries = await glob(listPatterns, {
     cwd: basePath,
     deep: 1,
     onlyFiles: false,

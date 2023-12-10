@@ -30,5 +30,5 @@ export const readListFile = async (root, candidates, encoding) => {
     }
   }
 
-  return [];
+  return ['*'];
 };
