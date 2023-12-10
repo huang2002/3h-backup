@@ -113,8 +113,6 @@ export const generateTask = async (options) => {
     name,
     sourcePath,
     destinationPath,
-    replace,
-    filter,
     removeEmptyDirectory,
     fileList,
   };

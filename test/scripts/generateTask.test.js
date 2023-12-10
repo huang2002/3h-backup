@@ -70,8 +70,6 @@ test(TEST_NAME, async () => {
               action: 'copy',
             },
           ],
-          filter: DEFAULT_FILTER,
-          replace: DEFAULT_REPLACE,
           removeEmptyDirectory: DEFAULT_REMOVE_EMPTY_DIRECTORY,
         }),
       );
@@ -112,8 +110,6 @@ test(TEST_NAME, async () => {
               action: 'copy',
             },
           ],
-          filter: CUSTOM_FILTER,
-          replace: CUSTOM_REPLACE,
           removeEmptyDirectory: CUSTOM_REMOVE_EMPTY_DIRECTORY,
         }),
       );

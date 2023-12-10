@@ -78,8 +78,6 @@ export const taskConfigValidator = types.dict({
  * @property {string} name
  * @property {string} sourcePath
  * @property {string} destinationPath
- * @property {BackupReplace} replace
- * @property {BackupFilter} filter
  * @property {boolean} removeEmptyDirectory
  * @property {readonly BackupTaskFileInfo[]} fileList
  */
