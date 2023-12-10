@@ -1,7 +1,7 @@
 import { Program } from '3h-cli';
 import process from 'node:process';
 import fs from 'node:fs';
-import { DEFAULT_CONFIG_PATH, DEFAULT_ENCODING } from './config.js';
+import { DEFAULT_CONFIG_FILE, DEFAULT_ENCODING } from './config.js';
 import { readConfigFile } from './readConfigFile.js';
 import { executeBackup } from './executeBackup.js';
 import path from 'node:path/posix';
@@ -24,7 +24,7 @@ program
     name: '--config',
     alias: '-c',
     value: '<path>',
-    help: `The Path to the config file.\nDefault: ${DEFAULT_CONFIG_PATH}`,
+    help: `The Path to the config file.\nDefault: ${DEFAULT_CONFIG_FILE}`,
   });
 
 program
@@ -37,7 +37,7 @@ program
     }
 
     const configPath = path.resolve(
-      args.getOption('--config')[0] ?? DEFAULT_CONFIG_PATH,
+      args.getOption('--config')[0] ?? DEFAULT_CONFIG_FILE,
     );
     const encoding = /** @type {BufferEncoding} */ (
       args.getOption('--encoding')[0] ?? DEFAULT_ENCODING
