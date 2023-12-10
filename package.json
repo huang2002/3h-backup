@@ -35,5 +35,8 @@
     "3h-validate": "^0.7.0",
     "fast-glob": "^3.3.2",
     "pave-path": "^0.2.0"
+  },
+  "engines": {
+    "node": ">=15"
   }
 }
