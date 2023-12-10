@@ -8,16 +8,24 @@ import {
   setFileStructure,
 } from './common.js';
 import assert from 'node:assert';
+import process from 'node:process';
 import { rm, writeFile } from 'node:fs/promises';
 
 const TEST_NAME = 'cli-execute';
+const CUSTOM_CONFIG_FILE = 'backup-config.json';
+const BACKUP_COMMAND = 'node';
+const BACKUP_COMMAND_ARGS = [
+  '../../src/cli.js',
+  '-c',
+  `./${TEST_NAME}/${CUSTOM_CONFIG_FILE}`,
+];
 
 test(TEST_NAME, async () => {
   cdTest();
 
   await setFileStructure(TEST_ROOT_DIR, {
     [TEST_NAME]: {
-      'backup-config.json': JSON.stringify({
+      [CUSTOM_CONFIG_FILE]: JSON.stringify({
         skipConfirm: true,
         tasks: [
           {
@@ -49,15 +57,13 @@ test(TEST_NAME, async () => {
     },
   });
 
+  process.chdir(TEST_ROOT_DIR);
+
   await test('initial backup', async () => {
-    await execAsync('node', [
-      '../src/cli.js',
-      '-c',
-      `./root/${TEST_NAME}/backup-config.json`,
-    ]);
+    await execAsync(BACKUP_COMMAND, BACKUP_COMMAND_ARGS);
 
     const destinationStructure = await getFileStructure(
-      `./root/${TEST_NAME}/dest`,
+      `./${TEST_NAME}/dest`,
       ENCODING,
     );
     assert.deepStrictEqual(destinationStructure, {
@@ -72,20 +78,16 @@ test(TEST_NAME, async () => {
   });
 
   await test('incremental backup', async () => {
-    await writeFile(`./root/${TEST_NAME}/src/file-1.txt`, 'file-1_new');
-    await writeFile(`./root/${TEST_NAME}/src/file-2.txt`, 'file-2_new');
-    await rm(`./root/${TEST_NAME}/src/foo/bar/baz.txt`);
-    await writeFile(`./root/${TEST_NAME}/dest/file-0.txt`, 'file-0_new');
-    await rm(`./root/${TEST_NAME}/dest/foo/file-2.txt`);
+    await writeFile(`./${TEST_NAME}/src/file-1.txt`, 'file-1_new');
+    await writeFile(`./${TEST_NAME}/src/file-2.txt`, 'file-2_new');
+    await rm(`./${TEST_NAME}/src/foo/bar/baz.txt`);
+    await writeFile(`./${TEST_NAME}/dest/file-0.txt`, 'file-0_new');
+    await rm(`./${TEST_NAME}/dest/foo/file-2.txt`);
 
-    await execAsync('node', [
-      '../src/cli.js',
-      '-c',
-      `./root/${TEST_NAME}/backup-config.json`,
-    ]);
+    await execAsync(BACKUP_COMMAND, BACKUP_COMMAND_ARGS);
 
     const newDestinationStructure = await getFileStructure(
-      `./root/${TEST_NAME}/dest`,
+      `./${TEST_NAME}/dest`,
       ENCODING,
     );
     assert.deepStrictEqual(newDestinationStructure, {
