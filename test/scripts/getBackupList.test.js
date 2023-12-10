@@ -36,6 +36,7 @@ test('getBackupList', async () => {
       },
       custom_list_file: {
         [CUSTOM_LIST_FILES[2]]: '*\n!file-1.txt\n!foo\n',
+        [CUSTOM_LIST_FILES[3]]: '',
         ...commonFiles,
       },
     },
@@ -67,6 +68,6 @@ test('getBackupList', async () => {
       listFiles: CUSTOM_LIST_FILES,
       encoding: 'utf-8',
     }),
-    ['file-0.txt', 'file-2.txt'],
+    ['file-0.txt', 'file-2.txt', CUSTOM_LIST_FILES[3]],
   );
 });
