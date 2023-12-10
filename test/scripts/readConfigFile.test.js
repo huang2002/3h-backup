@@ -43,54 +43,65 @@ test('readConfigFile', async () => {
     },
   });
 
-  assert.deepStrictEqual(
-    await readConfigFile(
-      `./root/${TEST_FOLDER}/${DEFAULT_CONFIG_FILE}`,
-      DEFAULT_ENCODING,
-    ),
-    {
-      tasks: [
+  await Promise.all([
+    test('default config file', async () => {
+      assert.deepStrictEqual(
+        await readConfigFile(
+          `./root/${TEST_FOLDER}/${DEFAULT_CONFIG_FILE}`,
+          DEFAULT_ENCODING,
+        ),
         {
-          name: 'foo',
-          source: 's0',
-          destination: 'd0',
-          replace: 'all',
-          filter: 'intersection',
+          tasks: [
+            {
+              name: 'foo',
+              source: 's0',
+              destination: 'd0',
+              replace: 'all',
+              filter: 'intersection',
+            },
+            {
+              source: 's1',
+              destination: 'd1',
+            },
+          ],
         },
+      );
+    }),
+
+    test('custom config file', async () => {
+      assert.deepStrictEqual(
+        await readConfigFile(
+          `./root/${TEST_FOLDER}/${CUSTOM_CONFIG_FILE}`,
+          DEFAULT_ENCODING,
+        ),
         {
-          source: 's1',
-          destination: 'd1',
+          tasks: [
+            {
+              source: 's',
+              destination: 'd',
+            },
+          ],
         },
-      ],
-    },
-  );
+      );
+    }),
 
-  assert.deepStrictEqual(
-    await readConfigFile(
-      `./root/${TEST_FOLDER}/${CUSTOM_CONFIG_FILE}`,
-      DEFAULT_ENCODING,
-    ),
-    {
-      tasks: [
-        {
-          source: 's',
-          destination: 'd',
-        },
-      ],
-    },
-  );
+    test('missing config file', async () => {
+      assert.rejects(
+        () =>
+          readConfigFile(`./root/${TEST_FOLDER}/404.json`, DEFAULT_ENCODING),
+        BackupError,
+      );
+    }),
 
-  assert.rejects(
-    () => readConfigFile(`./root/${TEST_FOLDER}/404.json`, DEFAULT_ENCODING),
-    BackupError,
-  );
-
-  assert.rejects(
-    () =>
-      readConfigFile(
-        `./root/${TEST_FOLDER}/${INVALID_CONFIG_FILE}`,
-        DEFAULT_ENCODING,
-      ),
-    BackupError,
-  );
+    test('invalid config file', async () => {
+      assert.rejects(
+        () =>
+          readConfigFile(
+            `./root/${TEST_FOLDER}/${INVALID_CONFIG_FILE}`,
+            DEFAULT_ENCODING,
+          ),
+        BackupError,
+      );
+    }),
+  ]);
 });

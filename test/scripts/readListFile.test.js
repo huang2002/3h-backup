@@ -21,22 +21,30 @@ test('readListFile', async () => {
 
   process.chdir(TEST_ROOT_DIR);
 
-  assert.deepStrictEqual(
-    await readListFile(TEST_FOLDER, DEFAULT_LIST_FILES, DEFAULT_ENCODING),
-    ['default'],
-  );
+  await Promise.all([
+    test('no list file', async () => {
+      assert.deepStrictEqual(
+        await readListFile(
+          `${TEST_FOLDER}/foo`,
+          DEFAULT_LIST_FILES,
+          DEFAULT_ENCODING,
+        ),
+        ['*'],
+      );
+    }),
 
-  assert.deepStrictEqual(
-    await readListFile(
-      `${TEST_FOLDER}/foo`,
-      DEFAULT_LIST_FILES,
-      DEFAULT_ENCODING,
-    ),
-    ['*'],
-  );
+    test('default list file', async () => {
+      assert.deepStrictEqual(
+        await readListFile(TEST_FOLDER, DEFAULT_LIST_FILES, DEFAULT_ENCODING),
+        ['default'],
+      );
+    }),
 
-  assert.deepStrictEqual(
-    await readListFile(TEST_FOLDER, CUSTOM_LIST_FILES, DEFAULT_ENCODING),
-    ['custom-0'],
-  );
+    test('custom list file', async () => {
+      assert.deepStrictEqual(
+        await readListFile(TEST_FOLDER, CUSTOM_LIST_FILES, DEFAULT_ENCODING),
+        ['custom-0'],
+      );
+    }),
+  ]);
 });

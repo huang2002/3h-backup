@@ -44,30 +44,36 @@ test('getBackupList', async () => {
 
   const TEST_FOLDER_PATH = path.join(TEST_ROOT_DIR, TEST_FOLDER);
 
-  assert.deepStrictEqual(
-    await getBackupList('', {
-      root: path.join(TEST_FOLDER_PATH, 'no_list_file'),
-      listFiles: DEFAULT_LIST_FILES,
-      encoding: 'utf-8',
-    }),
-    ['file-0.txt', 'file-1.txt', 'file-2.txt', 'foo/bar.txt'],
-  );
+  await test('no list file', async () => {
+    assert.deepStrictEqual(
+      await getBackupList('', {
+        root: path.join(TEST_FOLDER_PATH, 'no_list_file'),
+        listFiles: DEFAULT_LIST_FILES,
+        encoding: 'utf-8',
+      }),
+      ['file-0.txt', 'file-1.txt', 'file-2.txt', 'foo/bar.txt'],
+    );
+  });
 
-  assert.deepStrictEqual(
-    await getBackupList('', {
-      root: path.join(TEST_FOLDER_PATH, 'default_list_file'),
-      listFiles: DEFAULT_LIST_FILES,
-      encoding: 'utf-8',
-    }),
-    ['file-2.txt', 'foo/bar.txt'],
-  );
+  await test('default list file', async () => {
+    assert.deepStrictEqual(
+      await getBackupList('', {
+        root: path.join(TEST_FOLDER_PATH, 'default_list_file'),
+        listFiles: DEFAULT_LIST_FILES,
+        encoding: 'utf-8',
+      }),
+      ['file-2.txt', 'foo/bar.txt'],
+    );
+  });
 
-  assert.deepStrictEqual(
-    await getBackupList('', {
-      root: path.join(TEST_FOLDER_PATH, 'custom_list_file'),
-      listFiles: CUSTOM_LIST_FILES,
-      encoding: 'utf-8',
-    }),
-    ['file-0.txt', 'file-2.txt', CUSTOM_LIST_FILES[3]],
-  );
+  await test('custom list file', async () => {
+    assert.deepStrictEqual(
+      await getBackupList('', {
+        root: path.join(TEST_FOLDER_PATH, 'custom_list_file'),
+        listFiles: CUSTOM_LIST_FILES,
+        encoding: 'utf-8',
+      }),
+      ['file-0.txt', 'file-2.txt', CUSTOM_LIST_FILES[3]],
+    );
+  });
 });

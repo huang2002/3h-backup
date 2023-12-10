@@ -30,21 +30,26 @@ test('getAction', async () => {
   /**
    * @param {import('../../src/type.js').BackupReplace} replace
    * @param {import('../../src/type.js').BackupTaskFileAction[]} actions
-   * @returns {Promise<void[]>}
+   * @returns {Promise<void>}
    */
   const assertActions = (replace, actions) =>
-    Promise.all(
-      fileNames.map(async (fileName, i) => {
-        const source = path.join(`./root/${TEST_FOLDER}/src/`, fileName);
-        const destination = path.join(`./root/${TEST_FOLDER}/dest/`, fileName);
-        const action = await getAction({
-          source,
-          destination,
-          replace,
-        });
-        assert.strict(action, actions[i]);
-      }),
-    );
+    test(`replace === '${replace}'`, async () => {
+      await Promise.all(
+        fileNames.map(async (fileName, i) => {
+          const source = path.join(`./root/${TEST_FOLDER}/src/`, fileName);
+          const destination = path.join(
+            `./root/${TEST_FOLDER}/dest/`,
+            fileName,
+          );
+          const action = await getAction({
+            source,
+            destination,
+            replace,
+          });
+          assert.strict(action, actions[i]);
+        }),
+      );
+    });
 
   await Promise.all([
     assertActions('all', ['copy', 'copy', 'copy', 'remove']),
