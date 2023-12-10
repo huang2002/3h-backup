@@ -1,5 +1,5 @@
 import { promises as fs, existsSync } from 'node:fs';
-import path from 'node:path';
+import path from 'node:path/posix';
 import { BackupError } from './type.js';
 
 /**

@@ -1,4 +1,4 @@
-import path from 'node:path';
+import path from 'node:path/posix';
 import { getBackupList } from './getBackupList.js';
 import { existsSync } from 'node:fs';
 import { BackupError } from './type.js';

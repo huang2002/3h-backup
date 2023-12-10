@@ -1,7 +1,7 @@
 import test from 'node:test';
 import { cdTest, setFileStructure, TEST_ROOT_DIR } from './common.js';
 import { writeFile } from 'node:fs/promises';
-import path from 'node:path';
+import path from 'node:path/posix';
 import { getAction } from '../../src/getAction.js';
 import assert from 'node:assert';
 

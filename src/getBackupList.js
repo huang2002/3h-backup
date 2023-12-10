@@ -1,7 +1,7 @@
 import { promises as fs } from 'node:fs';
 import { readListFile } from './readListFile.js';
 import glob from 'fast-glob';
-import path from 'node:path';
+import path from 'node:path/posix';
 
 /**
  * @typedef GetBackupListOptions
