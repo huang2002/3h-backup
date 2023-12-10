@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { TEST_ROOT_DIR, cdTest, setFileStructure } from './common.js';
+import { ENCODING, TEST_ROOT_DIR, cdTest, setFileStructure } from './common.js';
 import assert from 'node:assert';
 import { getBackupList } from '../../src/getBackupList.js';
 import path from 'node:path';
@@ -49,7 +49,7 @@ test(TEST_NAME, async () => {
       await getBackupList('', {
         root: path.join(TEST_FOLDER_PATH, 'no_list_file'),
         listFiles: DEFAULT_LIST_FILES,
-        encoding: 'utf-8',
+        encoding: ENCODING,
       }),
       ['file-0.txt', 'file-1.txt', 'file-2.txt', 'foo/bar.txt'],
     );
@@ -60,7 +60,7 @@ test(TEST_NAME, async () => {
       await getBackupList('', {
         root: path.join(TEST_FOLDER_PATH, 'default_list_file'),
         listFiles: DEFAULT_LIST_FILES,
-        encoding: 'utf-8',
+        encoding: ENCODING,
       }),
       ['file-2.txt', 'foo/bar.txt'],
     );
@@ -71,7 +71,7 @@ test(TEST_NAME, async () => {
       await getBackupList('', {
         root: path.join(TEST_FOLDER_PATH, 'custom_list_file'),
         listFiles: CUSTOM_LIST_FILES,
-        encoding: 'utf-8',
+        encoding: ENCODING,
       }),
       ['file-0.txt', 'file-2.txt', CUSTOM_LIST_FILES[3]],
     );

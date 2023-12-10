@@ -1,5 +1,5 @@
 import test from 'node:test';
-import { TEST_ROOT_DIR, cdTest, setFileStructure } from './common.js';
+import { ENCODING, TEST_ROOT_DIR, cdTest, setFileStructure } from './common.js';
 import assert from 'node:assert';
 import path from 'node:path';
 import process from 'node:process';
@@ -54,7 +54,7 @@ test(TEST_NAME, async () => {
           defaultName: DEFAULT_TASK_NAME,
           base: '.',
           listFiles: DEFAULT_LIST_FILES,
-          encoding: 'utf-8',
+          encoding: ENCODING,
           defaultFilter: DEFAULT_FILTER,
           defaultReplace: DEFAULT_REPLACE,
           defaultRemoveEmptyDirectory: DEFAULT_REMOVE_EMPTY_DIRECTORY,
@@ -89,7 +89,7 @@ test(TEST_NAME, async () => {
           defaultName: DEFAULT_TASK_NAME,
           base: '.',
           listFiles: CUSTOM_LIST_FILES,
-          encoding: 'utf-8',
+          encoding: ENCODING,
           defaultFilter: DEFAULT_FILTER,
           defaultReplace: DEFAULT_REPLACE,
           defaultRemoveEmptyDirectory: DEFAULT_REMOVE_EMPTY_DIRECTORY,
