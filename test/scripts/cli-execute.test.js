@@ -13,12 +13,6 @@ import { rm, writeFile } from 'node:fs/promises';
 
 const TEST_NAME = 'cli-execute';
 const CUSTOM_CONFIG_FILE = 'backup-config.json';
-const BACKUP_COMMAND = 'node';
-const BACKUP_COMMAND_ARGS = [
-  '../../src/cli.js',
-  '-c',
-  `./${TEST_NAME}/${CUSTOM_CONFIG_FILE}`,
-];
 
 test(TEST_NAME, async () => {
   cdTest();
@@ -59,8 +53,15 @@ test(TEST_NAME, async () => {
 
   process.chdir(TEST_ROOT_DIR);
 
+  const execBackup = () =>
+    execAsync('node', [
+      '../../src/cli.js',
+      '-c',
+      `./${TEST_NAME}/${CUSTOM_CONFIG_FILE}`,
+    ]);
+
   await test('initial backup', async () => {
-    await execAsync(BACKUP_COMMAND, BACKUP_COMMAND_ARGS);
+    await execBackup();
 
     const destinationStructure = await getFileStructure(
       `./${TEST_NAME}/dest`,
@@ -84,7 +85,7 @@ test(TEST_NAME, async () => {
     await writeFile(`./${TEST_NAME}/dest/file-0.txt`, 'file-0_new');
     await rm(`./${TEST_NAME}/dest/foo/file-2.txt`);
 
-    await execAsync(BACKUP_COMMAND, BACKUP_COMMAND_ARGS);
+    await execBackup();
 
     const newDestinationStructure = await getFileStructure(
       `./${TEST_NAME}/dest`,
