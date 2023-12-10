@@ -11,19 +11,19 @@ import {
 } from '../../src/config.js';
 import { generateTask } from '../../src/generateTask.js';
 
-test('generateTask', async () => {
+const TEST_NAME = 'generateTask';
+const DEFAULT_TASK_NAME = 'T@5K';
+const CUSTOM_TASK_NAME = 'my-task';
+const CUSTOM_FILTER = 'union';
+const CUSTOM_REPLACE = 'ctime';
+const CUSTOM_LIST_FILES = ['my-backup-list.txt'];
+const CUSTOM_REMOVE_EMPTY_DIRECTORY = false;
+
+test(TEST_NAME, async () => {
   cdTest();
 
-  const TEST_FOLDER = 'generateTask';
-  const DEFAULT_TASK_NAME = 'T@5K';
-  const CUSTOM_TASK_NAME = 'my-task';
-  const CUSTOM_FILTER = 'union';
-  const CUSTOM_REPLACE = 'ctime';
-  const CUSTOM_LIST_FILES = ['my-backup-list.txt'];
-  const CUSTOM_REMOVE_EMPTY_DIRECTORY = false;
-
   await setFileStructure(TEST_ROOT_DIR, {
-    [TEST_FOLDER]: {
+    [TEST_NAME]: {
       src: {
         [DEFAULT_LIST_FILES[0]]: 'file-2.txt\n',
         [CUSTOM_LIST_FILES[0]]: 'foo\n',
@@ -40,7 +40,7 @@ test('generateTask', async () => {
     },
   });
 
-  const TEST_FOLDER_PATH = path.join(TEST_ROOT_DIR, TEST_FOLDER);
+  const TEST_FOLDER_PATH = path.join(TEST_ROOT_DIR, TEST_NAME);
   process.chdir(TEST_FOLDER_PATH);
 
   await Promise.all([

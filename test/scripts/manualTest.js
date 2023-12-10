@@ -3,12 +3,12 @@ import { TEST_ROOT_DIR, cdTest, setFileStructure } from './common.js';
 import { writeFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 
-const TEST_FOLDER = 'manual';
+const TEST_NAME = 'manual';
 
 cdTest();
 
 await setFileStructure(TEST_ROOT_DIR, {
-  [TEST_FOLDER]: {
+  [TEST_NAME]: {
     '3h-backup.json': JSON.stringify({
       skipConfirm: false,
       tasks: [
@@ -32,7 +32,7 @@ await setFileStructure(TEST_ROOT_DIR, {
   },
 });
 
-process.chdir(`./root/${TEST_FOLDER}`);
+process.chdir(`./root/${TEST_NAME}`);
 
 writeFileSync('./data/update.txt', 'updated');
 

@@ -5,25 +5,25 @@ import path from 'node:path';
 import { getAction } from '../../src/getAction.js';
 import assert from 'node:assert';
 
-test('getAction', async () => {
+const TEST_NAME = 'getAction';
+
+test(TEST_NAME, async () => {
   cdTest();
 
-  const TEST_FOLDER = 'getAction';
-
   await setFileStructure(TEST_ROOT_DIR, {
-    [TEST_FOLDER]: {
+    [TEST_NAME]: {
       src: {},
       dest: {},
     },
   });
-  await writeFile(`./root/${TEST_FOLDER}/src/file-0.txt`, 'file-0');
-  await writeFile(`./root/${TEST_FOLDER}/src/file-2.txt`, 'file-2');
-  await writeFile(`./root/${TEST_FOLDER}/dest/file-1.txt`, 'file-1');
-  await writeFile(`./root/${TEST_FOLDER}/dest/file-3.txt`, 'file-3');
-  await writeFile(`./root/${TEST_FOLDER}/src/file-1.txt`, 'file-1');
-  await writeFile(`./root/${TEST_FOLDER}/dest/file-2.txt`, 'file-2');
-  await writeFile(`./root/${TEST_FOLDER}/src/file-1.txt`, 'file-1_new');
-  await writeFile(`./root/${TEST_FOLDER}/dest/file-2.txt`, 'file-2_new');
+  await writeFile(`./root/${TEST_NAME}/src/file-0.txt`, 'file-0');
+  await writeFile(`./root/${TEST_NAME}/src/file-2.txt`, 'file-2');
+  await writeFile(`./root/${TEST_NAME}/dest/file-1.txt`, 'file-1');
+  await writeFile(`./root/${TEST_NAME}/dest/file-3.txt`, 'file-3');
+  await writeFile(`./root/${TEST_NAME}/src/file-1.txt`, 'file-1');
+  await writeFile(`./root/${TEST_NAME}/dest/file-2.txt`, 'file-2');
+  await writeFile(`./root/${TEST_NAME}/src/file-1.txt`, 'file-1_new');
+  await writeFile(`./root/${TEST_NAME}/dest/file-2.txt`, 'file-2_new');
 
   const fileNames = ['file-0.txt', 'file-1.txt', 'file-2.txt', 'file-3.txt'];
 
@@ -36,11 +36,8 @@ test('getAction', async () => {
     test(`replace === '${replace}'`, async () => {
       await Promise.all(
         fileNames.map(async (fileName, i) => {
-          const source = path.join(`./root/${TEST_FOLDER}/src/`, fileName);
-          const destination = path.join(
-            `./root/${TEST_FOLDER}/dest/`,
-            fileName,
-          );
+          const source = path.join(`./root/${TEST_NAME}/src/`, fileName);
+          const destination = path.join(`./root/${TEST_NAME}/dest/`, fileName);
           const action = await getAction({
             source,
             destination,

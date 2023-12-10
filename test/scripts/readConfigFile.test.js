@@ -5,15 +5,15 @@ import assert from 'node:assert';
 import { readConfigFile } from '../../src/readConfigFile.js';
 import { BackupError } from '../../src/type.js';
 
-test('readConfigFile', async () => {
+const TEST_NAME = 'readConfigFile';
+const CUSTOM_CONFIG_FILE = 'my-config.json';
+const INVALID_CONFIG_FILE = 'invalid-config.json';
+
+test(TEST_NAME, async () => {
   cdTest();
 
-  const TEST_FOLDER = 'readConfigFile';
-  const CUSTOM_CONFIG_FILE = 'my-config.json';
-  const INVALID_CONFIG_FILE = 'invalid-config.json';
-
   await setFileStructure(TEST_ROOT_DIR, {
-    [TEST_FOLDER]: {
+    [TEST_NAME]: {
       [DEFAULT_CONFIG_FILE]: JSON.stringify({
         tasks: [
           {
@@ -47,7 +47,7 @@ test('readConfigFile', async () => {
     test('default config file', async () => {
       assert.deepStrictEqual(
         await readConfigFile(
-          `./root/${TEST_FOLDER}/${DEFAULT_CONFIG_FILE}`,
+          `./root/${TEST_NAME}/${DEFAULT_CONFIG_FILE}`,
           DEFAULT_ENCODING,
         ),
         {
@@ -71,7 +71,7 @@ test('readConfigFile', async () => {
     test('custom config file', async () => {
       assert.deepStrictEqual(
         await readConfigFile(
-          `./root/${TEST_FOLDER}/${CUSTOM_CONFIG_FILE}`,
+          `./root/${TEST_NAME}/${CUSTOM_CONFIG_FILE}`,
           DEFAULT_ENCODING,
         ),
         {
@@ -87,8 +87,7 @@ test('readConfigFile', async () => {
 
     test('missing config file', async () => {
       assert.rejects(
-        () =>
-          readConfigFile(`./root/${TEST_FOLDER}/404.json`, DEFAULT_ENCODING),
+        () => readConfigFile(`./root/${TEST_NAME}/404.json`, DEFAULT_ENCODING),
         BackupError,
       );
     }),
@@ -97,7 +96,7 @@ test('readConfigFile', async () => {
       assert.rejects(
         () =>
           readConfigFile(
-            `./root/${TEST_FOLDER}/${INVALID_CONFIG_FILE}`,
+            `./root/${TEST_NAME}/${INVALID_CONFIG_FILE}`,
             DEFAULT_ENCODING,
           ),
         BackupError,

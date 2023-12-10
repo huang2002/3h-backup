@@ -10,13 +10,13 @@ import {
 import assert from 'node:assert';
 import { rm, writeFile } from 'node:fs/promises';
 
-test('cli functionality', async () => {
+const TEST_NAME = 'cli-execute';
+
+test(TEST_NAME, async () => {
   cdTest();
 
-  const TEST_FOLDER = 'cli-functionality';
-
   await setFileStructure(TEST_ROOT_DIR, {
-    [TEST_FOLDER]: {
+    [TEST_NAME]: {
       'backup-config.json': JSON.stringify({
         skipConfirm: true,
         tasks: [
@@ -53,11 +53,11 @@ test('cli functionality', async () => {
     await execAsync('node', [
       '../src/cli.js',
       '-c',
-      `./root/${TEST_FOLDER}/backup-config.json`,
+      `./root/${TEST_NAME}/backup-config.json`,
     ]);
 
     const destinationStructure = await getFileStructure(
-      `./root/${TEST_FOLDER}/dest`,
+      `./root/${TEST_NAME}/dest`,
       ENCODING,
     );
     assert.deepStrictEqual(destinationStructure, {
@@ -72,20 +72,20 @@ test('cli functionality', async () => {
   });
 
   await test('incremental backup', async () => {
-    await writeFile(`./root/${TEST_FOLDER}/src/file-1.txt`, 'file-1_new');
-    await writeFile(`./root/${TEST_FOLDER}/src/file-2.txt`, 'file-2_new');
-    await rm(`./root/${TEST_FOLDER}/src/foo/bar/baz.txt`);
-    await writeFile(`./root/${TEST_FOLDER}/dest/file-0.txt`, 'file-0_new');
-    await rm(`./root/${TEST_FOLDER}/dest/foo/file-2.txt`);
+    await writeFile(`./root/${TEST_NAME}/src/file-1.txt`, 'file-1_new');
+    await writeFile(`./root/${TEST_NAME}/src/file-2.txt`, 'file-2_new');
+    await rm(`./root/${TEST_NAME}/src/foo/bar/baz.txt`);
+    await writeFile(`./root/${TEST_NAME}/dest/file-0.txt`, 'file-0_new');
+    await rm(`./root/${TEST_NAME}/dest/foo/file-2.txt`);
 
     await execAsync('node', [
       '../src/cli.js',
       '-c',
-      `./root/${TEST_FOLDER}/backup-config.json`,
+      `./root/${TEST_NAME}/backup-config.json`,
     ]);
 
     const newDestinationStructure = await getFileStructure(
-      `./root/${TEST_FOLDER}/dest`,
+      `./root/${TEST_NAME}/dest`,
       ENCODING,
     );
     assert.deepStrictEqual(newDestinationStructure, {

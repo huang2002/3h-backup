@@ -3,7 +3,7 @@ import { execSync } from 'node:child_process';
 import { test } from 'node:test';
 import { cdTest } from './common.js';
 
-test('cli help info', () => {
+test('cli-help', () => {
   cdTest();
 
   const cliOutput = execSync('node ../src/cli.js --help', {

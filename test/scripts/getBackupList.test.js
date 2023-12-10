@@ -5,16 +5,16 @@ import { getBackupList } from '../../src/getBackupList.js';
 import path from 'node:path';
 import { DEFAULT_LIST_FILES } from '../../src/config.js';
 
-test('getBackupList', async () => {
-  cdTest();
+const TEST_NAME = 'getBackupList';
+const CUSTOM_LIST_FILES = [
+  '.3h-backup-list',
+  '3h-backup-list.txt',
+  '.my-backup-list',
+  'my-backup-list.txt',
+];
 
-  const TEST_FOLDER = 'getBackupList';
-  const CUSTOM_LIST_FILES = [
-    '.3h-backup-list',
-    '3h-backup-list.txt',
-    '.my-backup-list',
-    'my-backup-list.txt',
-  ];
+test(TEST_NAME, async () => {
+  cdTest();
 
   const commonFiles = {
     'file-0.txt': 'file-0',
@@ -26,7 +26,7 @@ test('getBackupList', async () => {
   };
 
   await setFileStructure(TEST_ROOT_DIR, {
-    [TEST_FOLDER]: {
+    [TEST_NAME]: {
       no_list_file: {
         ...commonFiles,
       },
@@ -42,7 +42,7 @@ test('getBackupList', async () => {
     },
   });
 
-  const TEST_FOLDER_PATH = path.join(TEST_ROOT_DIR, TEST_FOLDER);
+  const TEST_FOLDER_PATH = path.join(TEST_ROOT_DIR, TEST_NAME);
 
   await test('no list file', async () => {
     assert.deepStrictEqual(

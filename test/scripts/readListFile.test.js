@@ -4,14 +4,14 @@ import { DEFAULT_ENCODING, DEFAULT_LIST_FILES } from '../../src/config.js';
 import assert from 'node:assert';
 import { readListFile } from '../../src/readListFile.js';
 
-test('readListFile', async () => {
+const TEST_NAME = 'readListFile';
+const CUSTOM_LIST_FILES = ['.my-backup-list', 'my-backup-list.txt'];
+
+test(TEST_NAME, async () => {
   cdTest();
 
-  const TEST_FOLDER = 'readListFile';
-  const CUSTOM_LIST_FILES = ['.my-backup-list', 'my-backup-list.txt'];
-
   await setFileStructure(TEST_ROOT_DIR, {
-    [TEST_FOLDER]: {
+    [TEST_NAME]: {
       [DEFAULT_LIST_FILES[0]]: 'default\n',
       [CUSTOM_LIST_FILES[0]]: 'custom-0\n',
       [CUSTOM_LIST_FILES[1]]: 'custom-1\n',
@@ -25,7 +25,7 @@ test('readListFile', async () => {
     test('no list file', async () => {
       assert.deepStrictEqual(
         await readListFile(
-          `${TEST_FOLDER}/foo`,
+          `${TEST_NAME}/foo`,
           DEFAULT_LIST_FILES,
           DEFAULT_ENCODING,
         ),
@@ -35,14 +35,14 @@ test('readListFile', async () => {
 
     test('default list file', async () => {
       assert.deepStrictEqual(
-        await readListFile(TEST_FOLDER, DEFAULT_LIST_FILES, DEFAULT_ENCODING),
+        await readListFile(TEST_NAME, DEFAULT_LIST_FILES, DEFAULT_ENCODING),
         ['default'],
       );
     }),
 
     test('custom list file', async () => {
       assert.deepStrictEqual(
-        await readListFile(TEST_FOLDER, CUSTOM_LIST_FILES, DEFAULT_ENCODING),
+        await readListFile(TEST_NAME, CUSTOM_LIST_FILES, DEFAULT_ENCODING),
         ['custom-0'],
       );
     }),
