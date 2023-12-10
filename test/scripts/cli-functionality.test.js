@@ -13,7 +13,7 @@ import { rm, writeFile } from 'node:fs/promises';
 test('cli functionality', async () => {
   cdTest();
 
-  const TEST_FOLDER = 'test_cli_functionality';
+  const TEST_FOLDER = 'cli-functionality';
 
   await setFileStructure(TEST_ROOT_DIR, {
     [TEST_FOLDER]: {

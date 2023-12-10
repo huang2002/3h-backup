@@ -8,7 +8,7 @@ import assert from 'node:assert';
 test('getAction', async () => {
   cdTest();
 
-  const TEST_FOLDER = 'test_getAction';
+  const TEST_FOLDER = 'getAction';
 
   await setFileStructure(TEST_ROOT_DIR, {
     [TEST_FOLDER]: {

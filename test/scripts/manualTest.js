@@ -3,7 +3,7 @@ import { TEST_ROOT_DIR, cdTest, setFileStructure } from './common.js';
 import { writeFileSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 
-const TEST_FOLDER = 'test_manual';
+const TEST_FOLDER = 'manual';
 
 cdTest();
 await setFileStructure(TEST_ROOT_DIR, {

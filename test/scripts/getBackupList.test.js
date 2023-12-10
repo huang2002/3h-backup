@@ -8,7 +8,7 @@ import { DEFAULT_LIST_FILES } from '../../src/config.js';
 test('getBackupList', async () => {
   cdTest();
 
-  const TEST_FOLDER = 'test_getBackupList';
+  const TEST_FOLDER = 'getBackupList';
   const CUSTOM_LIST_FILES = [
     '.3h-backup-list',
     '3h-backup-list.txt',
