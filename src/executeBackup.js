@@ -53,7 +53,7 @@ export const executeBackup = async (config, base) => {
       (count, task) => count + task.fileList.length,
       0,
     );
-    console.log(`Backup all ${totalCount} file(s)?`);
+    console.log(`Update all ${totalCount} file(s)?`);
     const confirm = await readline.question('Y or N: ');
     readline.close();
     if (confirm.toLowerCase() !== 'y') {
