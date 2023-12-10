@@ -6,6 +6,7 @@ import { execSync } from 'node:child_process';
 const TEST_FOLDER = 'manual';
 
 cdTest();
+
 await setFileStructure(TEST_ROOT_DIR, {
   [TEST_FOLDER]: {
     '3h-backup.json': JSON.stringify({
