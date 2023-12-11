@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Program } from '3h-cli';
 import process from 'node:process';
 import fs from 'node:fs';
