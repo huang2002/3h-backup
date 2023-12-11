@@ -76,9 +76,9 @@ type BackupFilter = (
  * Replace strategy. (See the subsections below for more info.)
  */
 type BackupReplace = (
-  | 'mtime'
-  | 'ctime'
-  | 'all'
+    | 'mtime'
+    | 'ctime'
+    | 'all'
 );
 
 /**
