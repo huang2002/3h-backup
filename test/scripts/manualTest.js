@@ -1,6 +1,6 @@
 import process from 'node:process';
 import { TEST_ROOT_DIR, cdTest, setFileStructure } from './common.js';
-import { writeFileSync } from 'node:fs';
+import fs from 'node:fs/promises';
 import { execSync } from 'node:child_process';
 
 const TEST_NAME = 'manual';
@@ -24,9 +24,9 @@ await setFileStructure(TEST_ROOT_DIR, {
     data: {
       'new.txt': 'new',
       'update.txt': 'outdated',
+      'no-op.txt': 'no-op',
     },
     backup: {
-      'update.txt': 'outdated',
       'extra.txt': 'extra',
     },
   },
@@ -34,7 +34,8 @@ await setFileStructure(TEST_ROOT_DIR, {
 
 process.chdir(`./root/${TEST_NAME}`);
 
-writeFileSync('./data/update.txt', 'updated');
+await fs.copyFile('./data/no-op.txt', './backup/no-op.txt');
+await fs.writeFile('./data/update.txt', 'updated');
 
 execSync('node ../../../src/cli.js', {
   stdio: 'inherit',
