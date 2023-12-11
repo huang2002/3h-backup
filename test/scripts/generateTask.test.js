@@ -34,9 +34,12 @@ test(TEST_NAME, async () => {
           'bar.txt': 'foo/bar',
         },
       },
-      dest: {
-        'file-2.txt': 'file-2',
-      },
+    },
+  });
+
+  await setFileStructure(path.join(TEST_ROOT_DIR, TEST_NAME), {
+    dest: {
+      'file-2.txt': 'file-2',
     },
   });
 
