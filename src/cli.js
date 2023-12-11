@@ -27,6 +27,12 @@ program
     help: `The Path to the config file.\nDefault: ${DEFAULT_CONFIG_FILE}`,
   })
   .option({
+    name: '--encoding',
+    alias: '-e',
+    value: '<enc>',
+    help: `The encoding of the config file and list files.\nDefault: ${DEFAULT_ENCODING}`,
+  })
+  .option({
     name: '--json',
     alias: '-j',
     help: 'Print tasks in json format.\nDefault format: simple',
