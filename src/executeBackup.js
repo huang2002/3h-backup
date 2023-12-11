@@ -56,14 +56,19 @@ export const executeBackup = async (options) => {
     printTasks(tasks, tasksPrinterName);
     console.log();
 
+    let totalCount = 0;
+    for (const task of tasks) {
+      for (const fileInfo of task.fileList) {
+        if (fileInfo.action !== 'none') {
+          totalCount += 1;
+        }
+      }
+    }
+
     const readline = createInterface({
       input: process.stdin,
       output: process.stdout,
     });
-    const totalCount = tasks.reduce(
-      (count, task) => count + task.fileList.length,
-      0,
-    );
     console.log(`Update all ${totalCount} file(s)?`);
     const confirm = await readline.question('Y or N: ');
     readline.close();
