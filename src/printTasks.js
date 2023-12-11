@@ -39,8 +39,8 @@ export const tasksPrinters = new Map([
               logger(`    - (remove) ${destination}`);
               break;
             }
-            case 'none': {
-              logger(`    ~  (no-op) ${destination}`);
+            default: {
+              // no-op
               break;
             }
           }
