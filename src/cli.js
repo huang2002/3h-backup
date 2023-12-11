@@ -25,6 +25,11 @@ program
     alias: '-c',
     value: '<path>',
     help: `The Path to the config file.\nDefault: ${DEFAULT_CONFIG_FILE}`,
+  })
+  .option({
+    name: '--json',
+    alias: '-j',
+    help: 'Print tasks in json format.\nDefault format: simple',
   });
 
 program
@@ -36,14 +41,16 @@ program
       return program.help();
     }
 
-    const configPath = path.resolve(
-      args.getOption('--config')[0] ?? DEFAULT_CONFIG_FILE,
-    );
+    const configFilePath = args.getOption('--config')[0] ?? DEFAULT_CONFIG_FILE;
+    const configPath = path.resolve(configFilePath);
     const encoding = /** @type {BufferEncoding} */ (
       args.getOption('--encoding')[0] ?? DEFAULT_ENCODING
     );
     const config = await readConfigFile(configPath, encoding);
-    await executeBackup(config, path.dirname(configPath));
+    const base = path.dirname(configPath);
+    const tasksPrinterName = options.has('--json') ? 'json' : 'simple';
+
+    await executeBackup({ config, base, tasksPrinterName });
   })
   .catch((reason) => {
     console.error(reason);

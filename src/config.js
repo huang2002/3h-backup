@@ -1,6 +1,7 @@
 export const DEFAULT_ENCODING = 'utf-8';
 export const DEFAULT_CONFIG_FILE = '3h-backup.json';
 export const DEFAULT_LIST_FILES = ['.3h-backup-list'];
+export const DEFAULT_TASKS_PRINTER = 'simple';
 export const DEFAULT_REMOVE_EMPTY_DIRECTORY = true;
 
 /**

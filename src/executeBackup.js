@@ -4,18 +4,28 @@ import {
   DEFAULT_LIST_FILES,
   DEFAULT_REMOVE_EMPTY_DIRECTORY,
   DEFAULT_REPLACE,
+  DEFAULT_TASKS_PRINTER,
 } from './config.js';
 import { createInterface } from 'node:readline/promises';
 import process from 'node:process';
 import { generateTask } from './generateTask.js';
 import { executeTask } from './executeTask.js';
+import { printTasks } from './printTasks.js';
 
 /**
- * @param {import('./type.js').BackupConfig} config
- * @param {string} base
+ * @typedef ExecuteBackupOptions
+ * @property {import('./type.js').BackupConfig} config
+ * @property {string} base
+ * @property {string} [tasksPrinterName]
+ */
+
+/**
+ * @param {ExecuteBackupOptions} options
  * @returns {Promise<boolean>} `true` if done; `false` if canceled.
  */
-export const executeBackup = async (config, base) => {
+export const executeBackup = async (options) => {
+  const { config } = options;
+
   const listFiles = config.listFiles ?? DEFAULT_LIST_FILES;
   const encoding = config.encoding ?? DEFAULT_ENCODING;
   const defaultReplace = config.replace ?? DEFAULT_REPLACE;
@@ -31,7 +41,7 @@ export const executeBackup = async (config, base) => {
       generateTask({
         defaultName: `Task#${index}`,
         config: taskConfig,
-        base,
+        base: options.base,
         listFiles,
         encoding,
         defaultReplace,
@@ -42,7 +52,8 @@ export const executeBackup = async (config, base) => {
   );
 
   if (!config.skipConfirm) {
-    console.log('Backup Tasks: ' + JSON.stringify(tasks, null, 2));
+    const tasksPrinterName = options.tasksPrinterName ?? DEFAULT_TASKS_PRINTER;
+    printTasks(tasks, tasksPrinterName);
     console.log();
 
     const readline = createInterface({

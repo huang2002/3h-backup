@@ -42,8 +42,8 @@ test(TEST_NAME, async () => {
   process.chdir(TEST_ROOT_DIR);
 
   const execBackup = () =>
-    executeBackup(
-      {
+    executeBackup({
+      config: {
         skipConfirm: true,
         tasks: [
           {
@@ -53,8 +53,8 @@ test(TEST_NAME, async () => {
           },
         ],
       },
-      TEST_NAME,
-    );
+      base: TEST_NAME,
+    });
 
   await test('initial backup', async () => {
     await execBackup();

@@ -6,4 +6,5 @@ export * from './getBackupList.js';
 export * from './getAction.js';
 export * from './generateTask.js';
 export * from './executeTask.js';
+export * from './printTasks.js';
 export * from './executeBackup.js';
