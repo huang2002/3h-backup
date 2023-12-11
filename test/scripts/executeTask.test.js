@@ -8,7 +8,7 @@ import {
 } from './common.js';
 import { executeTask } from '../../src/executeTask.js';
 import process from 'node:process';
-import path from 'node:path/posix';
+import path from 'node:path';
 import assert from 'node:assert';
 
 const TEST_NAME = 'executeTask';

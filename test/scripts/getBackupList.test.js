@@ -51,7 +51,7 @@ test(TEST_NAME, async () => {
         listFiles: DEFAULT_LIST_FILES,
         encoding: ENCODING,
       }),
-      ['file-0.txt', 'file-1.txt', 'file-2.txt', 'foo/bar.txt'],
+      ['file-0.txt', 'file-1.txt', 'file-2.txt', path.join('foo', 'bar.txt')],
     );
   });
 
@@ -62,7 +62,7 @@ test(TEST_NAME, async () => {
         listFiles: DEFAULT_LIST_FILES,
         encoding: ENCODING,
       }),
-      ['file-2.txt', 'foo/bar.txt'],
+      ['file-2.txt', path.join('foo', 'bar.txt')],
     );
   });
 

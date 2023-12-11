@@ -61,12 +61,12 @@ test(TEST_NAME, async () => {
         }),
         /** @satisfies {import('../../src/type.js').BackupTask} */ ({
           name: DEFAULT_TASK_NAME,
-          sourcePath: path.posix.resolve('src'),
-          destinationPath: path.posix.resolve('backup'),
+          sourcePath: path.resolve('src'),
+          destinationPath: path.resolve('backup'),
           fileList: [
             {
-              source: path.posix.resolve('src/file-2.txt'),
-              destination: path.posix.resolve('backup/file-2.txt'),
+              source: path.resolve('src/file-2.txt'),
+              destination: path.resolve('backup/file-2.txt'),
               action: 'copy',
             },
           ],
@@ -96,17 +96,17 @@ test(TEST_NAME, async () => {
         }),
         /** @satisfies {import('../../src/type.js').BackupTask} */ ({
           name: CUSTOM_TASK_NAME,
-          sourcePath: path.posix.resolve('src'),
-          destinationPath: path.posix.resolve('dest'),
+          sourcePath: path.resolve('src'),
+          destinationPath: path.resolve('dest'),
           fileList: [
             {
-              source: path.posix.resolve('src/file-2.txt'),
-              destination: path.posix.resolve('dest/file-2.txt'),
+              source: path.resolve('src/file-2.txt'),
+              destination: path.resolve('dest/file-2.txt'),
               action: 'none',
             },
             {
-              source: path.posix.resolve('src/foo/bar.txt'),
-              destination: path.posix.resolve('dest/foo/bar.txt'),
+              source: path.resolve('src/foo/bar.txt'),
+              destination: path.resolve('dest/foo/bar.txt'),
               action: 'copy',
             },
           ],

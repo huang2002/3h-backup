@@ -1,4 +1,4 @@
-import path from 'node:path/posix';
+import path from 'node:path';
 import { promises as fs } from 'node:fs';
 import pavePath from 'pave-path';
 

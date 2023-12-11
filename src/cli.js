@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import { DEFAULT_CONFIG_FILE, DEFAULT_ENCODING } from './config.js';
 import { readConfigFile } from './readConfigFile.js';
 import { executeBackup } from './executeBackup.js';
-import path from 'node:path/posix';
+import path from 'node:path';
 
 const packageJsonUrl = new URL('../package.json', import.meta.url);
 const packageJsonContent = fs.readFileSync(packageJsonUrl, 'utf-8');
