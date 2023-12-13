@@ -5,6 +5,7 @@
  * @returns {void}
  */
 
+import path from 'node:path';
 import { BackupError } from './type.js';
 
 /**
@@ -34,7 +35,11 @@ export const tasksPrinters = new Map([
 
         logger('* fileList:');
         for (const fileInfo of task.fileList) {
-          const { source, destination } = fileInfo;
+          const source = path.relative(task.sourcePath, fileInfo.source);
+          const destination = path.relative(
+            task.destinationPath,
+            fileInfo.destination,
+          );
           switch (fileInfo.action) {
             case 'copy': {
               logger(`    + (update) ${source} -> ${destination}`);
