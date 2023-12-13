@@ -23,7 +23,9 @@ await setFileStructure(TEST_ROOT_DIR, {
 
     data: {
       'new.txt': 'new',
-      'update.txt': 'outdated',
+      foo: {
+        'update.txt': 'outdated',
+      },
       'no-op.txt': 'no-op',
     },
     backup: {
@@ -35,7 +37,7 @@ await setFileStructure(TEST_ROOT_DIR, {
 process.chdir(`./root/${TEST_NAME}`);
 
 await fs.copyFile('./data/no-op.txt', './backup/no-op.txt');
-await fs.writeFile('./data/update.txt', 'updated');
+await fs.writeFile('./data/foo/update.txt', 'updated');
 
 execSync('node ../../../src/cli.js', {
   stdio: 'inherit',
