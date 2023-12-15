@@ -72,7 +72,7 @@ test(TEST_NAME, async () => {
               source: path.resolve('src/file-2.txt'),
               destination: path.resolve('backup/file-2.txt'),
               sourceExists: true,
-              destinationExists: true,
+              destinationExists: false,
               action: 'copy',
             },
           ],
