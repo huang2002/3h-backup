@@ -105,11 +105,19 @@ export const generateTask = async (options) => {
     filePathList.map(async (filePath) => {
       const source = path.join(sourcePath, filePath);
       const destination = path.join(destinationPath, filePath);
-      const action = await getAction({ source, destination, replace });
+      const sourceExists = existsSync(source);
+      const destinationExists = existsSync(destination);
+      const action = await getAction({
+        source,
+        destination,
+        sourceExists,
+        destinationExists,
+        replace,
+      });
       if (action !== 'none') {
         operationCount += 1;
       }
-      return { source, destination, action };
+      return { source, destination, sourceExists, destinationExists, action };
     }),
   );
 

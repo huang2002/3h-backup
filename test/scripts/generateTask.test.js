@@ -71,6 +71,8 @@ test(TEST_NAME, async () => {
             {
               source: path.resolve('src/file-2.txt'),
               destination: path.resolve('backup/file-2.txt'),
+              sourceExists: true,
+              destinationExists: true,
               action: 'copy',
             },
           ],
@@ -107,11 +109,15 @@ test(TEST_NAME, async () => {
             {
               source: path.resolve('src/file-2.txt'),
               destination: path.resolve('dest/file-2.txt'),
+              sourceExists: true,
+              destinationExists: true,
               action: 'none',
             },
             {
               source: path.resolve('src/foo/bar.txt'),
               destination: path.resolve('dest/foo/bar.txt'),
+              sourceExists: true,
+              destinationExists: false,
               action: 'copy',
             },
           ],

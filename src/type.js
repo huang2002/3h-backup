@@ -70,6 +70,8 @@ export const taskConfigValidator = types.dict({
  * @typedef BackupTaskFileInfo
  * @property {string} source
  * @property {string} destination
+ * @property {boolean} sourceExists
+ * @property {boolean} destinationExists
  * @property {BackupTaskFileAction} action
  */
 
