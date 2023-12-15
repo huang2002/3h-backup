@@ -37,7 +37,7 @@ export const executeBackup = async (options) => {
    * @type {import('./type.js').BackupTask[]}
    */
   const tasks = await Promise.all(
-    config.tasks.map(async (taskConfig, index) =>
+    config.tasks.map((taskConfig, index) =>
       generateTask({
         defaultName: `Task#${index}`,
         config: taskConfig,
