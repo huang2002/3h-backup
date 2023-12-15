@@ -13,7 +13,7 @@ test(TEST_NAME, async () => {
   await setFileStructure(TEST_ROOT_DIR, {
     [TEST_NAME]: {
       [DEFAULT_LIST_FILES[0]]: 'default\n',
-      [CUSTOM_LIST_FILES[0]]: 'custom-0\n',
+      [CUSTOM_LIST_FILES[0]]: 'custom\n\n  \n# foo\n  # bar  \n0\n',
       [CUSTOM_LIST_FILES[1]]: 'custom-1\n',
       foo: {},
     },
@@ -43,7 +43,7 @@ test(TEST_NAME, async () => {
     test('custom list file', async () => {
       assert.deepStrictEqual(
         await readListFile(TEST_NAME, CUSTOM_LIST_FILES, DEFAULT_ENCODING),
-        ['custom-0'],
+        ['custom', '0'],
       );
     }),
   ]);

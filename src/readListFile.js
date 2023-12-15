@@ -21,7 +21,7 @@ export const readListFile = async (root, candidates, encoding) => {
       return fileContent
         .split('\n')
         .map((line) => line.trim())
-        .filter(Boolean);
+        .filter((line) => line && line[0] !== '#');
     } catch (error) {
       throw new BackupError(
         'Failed to read backup list file: ' + filePath,
