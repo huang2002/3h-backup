@@ -45,6 +45,7 @@ test(TEST_NAME, async () => {
     sourcePath: path.resolve('src'),
     destinationPath: path.resolve('dest'),
     removeEmptyDirectory: true,
+    operationCount: 4,
     fileList: [
       {
         source: path.resolve('src/file-0.txt'),

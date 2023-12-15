@@ -24,7 +24,7 @@ export const tasksPrinters = new Map([
     (tasks, logger) => {
       logger('Backup Tasks:');
       for (const task of tasks) {
-        if (task.fileList.every((fileInfo) => fileInfo.action === 'none')) {
+        if (!task.operationCount) {
           continue;
         }
 
@@ -33,7 +33,7 @@ export const tasksPrinters = new Map([
         logger(`* destinationPath      = ${task.destinationPath}`);
         logger(`* removeEmptyDirectory = ${task.removeEmptyDirectory}`);
 
-        logger('* fileList:');
+        logger(`* fileList: (${task.operationCount})`);
         for (const fileInfo of task.fileList) {
           const source = path.relative(task.sourcePath, fileInfo.source);
           const destination = path.relative(

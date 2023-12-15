@@ -4,8 +4,13 @@ import pavePath from 'pave-path';
 
 /**
  * @param {import('./type.js').BackupTask} task
+ * @returns {Promise<void>}
  */
 export const executeTask = async (task) => {
+  if (!task.operationCount) {
+    return;
+  }
+
   /**
    * @type {Set<string> | null}
    */

@@ -56,14 +56,10 @@ export const executeBackup = async (options) => {
     printTasks(tasks, tasksPrinterName);
     console.log();
 
-    let totalCount = 0;
-    for (const task of tasks) {
-      for (const fileInfo of task.fileList) {
-        if (fileInfo.action !== 'none') {
-          totalCount += 1;
-        }
-      }
-    }
+    const totalCount = tasks.reduce(
+      (sum, task) => sum + task.operationCount,
+      0,
+    );
 
     const readline = createInterface({
       input: process.stdin,
@@ -83,7 +79,9 @@ export const executeBackup = async (options) => {
 
   for (const task of tasks) {
     console.log(`Executing task "${task.name}"...`);
-    await executeTask(task);
+    if (task.operationCount) {
+      await executeTask(task);
+    }
   }
 
   console.log('Backup succeeded.');

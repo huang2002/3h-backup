@@ -66,6 +66,7 @@ test(TEST_NAME, async () => {
           name: DEFAULT_TASK_NAME,
           sourcePath: path.resolve('src'),
           destinationPath: path.resolve('backup'),
+          operationCount: 1,
           fileList: [
             {
               source: path.resolve('src/file-2.txt'),
@@ -101,6 +102,7 @@ test(TEST_NAME, async () => {
           name: CUSTOM_TASK_NAME,
           sourcePath: path.resolve('src'),
           destinationPath: path.resolve('dest'),
+          operationCount: 1,
           fileList: [
             {
               source: path.resolve('src/file-2.txt'),

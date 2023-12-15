@@ -100,11 +100,15 @@ export const generateTask = async (options) => {
     }
   }
 
+  let operationCount = 0;
   const fileList = await Promise.all(
     filePathList.map(async (filePath) => {
       const source = path.join(sourcePath, filePath);
       const destination = path.join(destinationPath, filePath);
       const action = await getAction({ source, destination, replace });
+      if (action !== 'none') {
+        operationCount += 1;
+      }
       return { source, destination, action };
     }),
   );
@@ -115,5 +119,6 @@ export const generateTask = async (options) => {
     destinationPath,
     removeEmptyDirectory,
     fileList,
+    operationCount,
   };
 };
