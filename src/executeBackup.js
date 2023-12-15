@@ -78,10 +78,11 @@ export const executeBackup = async (options) => {
   console.log('Backup started.');
 
   for (const task of tasks) {
-    console.log(`Executing task "${task.name}"...`);
-    if (task.operationCount) {
-      await executeTask(task);
+    if (!task.operationCount) {
+      continue;
     }
+    console.log(`Executing task "${task.name}"...`);
+    await executeTask(task);
   }
 
   console.log('Backup succeeded.');
