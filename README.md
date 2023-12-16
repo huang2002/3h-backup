@@ -72,11 +72,15 @@ Usage:
   3h-backup [options]
 
 Options:
-  --help, -h              Show help info.
-  --config, -c <path>     The Path to the config file.
-                          Default: 3h-backup.json
-  --json, -j              Print tasks in json format.
-                          Default format: simple
+  --help, -h                      Show help info.
+  --config, -c <path>             The Path to the config file.
+                                  Default: 3h-backup.json
+  --tasks, -t <identities...>     Tasks to execute.
+                                  Default: execute all tasks
+  --encoding, -e <enc>            The encoding of the config file and list files.
+                                  Default: utf-8
+  --json, -j                      Print tasks in json format.
+                                  Default format: simple
 ```
 
 ## List Files
