@@ -30,6 +30,9 @@ await setFileStructure(TEST_ROOT_DIR, {
     },
     backup: {
       'extra.txt': 'extra',
+      foo: {
+        'update.txt': 'outdated',
+      },
     },
   },
 });

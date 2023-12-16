@@ -1,3 +1,6 @@
+import path from 'node:path';
+import { BackupError } from './type.js';
+
 /**
  * @callback TaskPrinter
  * @param {import('./type.js').BackupTask[]} tasks
@@ -5,8 +8,7 @@
  * @returns {void}
  */
 
-import path from 'node:path';
-import { BackupError } from './type.js';
+const SIMPLE_FILE_INFO_INDENT = '    ';
 
 /**
  * @type {Map<string, TaskPrinter>}
@@ -42,11 +44,21 @@ export const tasksPrinters = new Map([
           );
           switch (fileInfo.action) {
             case 'copy': {
-              logger(`    + (update) ${source} -> ${destination}`);
+              if (fileInfo.destinationExists) {
+                logger(
+                  SIMPLE_FILE_INFO_INDENT +
+                    `~ (update) ${source} -> ${destination}`,
+                );
+              } else {
+                logger(
+                  SIMPLE_FILE_INFO_INDENT +
+                    `+ (create) ${source} -> ${destination}`,
+                );
+              }
               break;
             }
             case 'remove': {
-              logger(`    - (remove) ${destination}`);
+              logger(SIMPLE_FILE_INFO_INDENT + `- (remove) ${destination}`);
               break;
             }
             default: {
