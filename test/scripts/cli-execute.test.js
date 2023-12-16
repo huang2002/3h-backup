@@ -10,6 +10,7 @@ import {
 import assert from 'node:assert';
 import process from 'node:process';
 import { rm, writeFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 
 const TEST_NAME = 'cli-execute';
 const CUSTOM_CONFIG_FILE = 'backup-config.json';
@@ -19,16 +20,23 @@ test(TEST_NAME, async () => {
 
   await setFileStructure(TEST_ROOT_DIR, {
     [TEST_NAME]: {
-      [CUSTOM_CONFIG_FILE]: JSON.stringify({
-        skipConfirm: true,
-        tasks: [
-          {
-            source: 'src',
-            destination: 'dest',
-            filter: 'union',
-          },
-        ],
-      }),
+      [CUSTOM_CONFIG_FILE]: JSON.stringify(
+        /** @satisfies {import('../../src/type.js').BackupConfig} */ ({
+          skipConfirm: true,
+          tasks: [
+            {
+              source: 'src',
+              destination: 'dest',
+              filter: 'union',
+            },
+            {
+              source: 'src',
+              destination: 'extra',
+              filter: 'union',
+            },
+          ],
+        }),
+      ),
 
       src: {
         'file-0.txt': 'file-0',
@@ -58,10 +66,17 @@ test(TEST_NAME, async () => {
       '../../src/cli.js',
       '-c',
       `./${TEST_NAME}/${CUSTOM_CONFIG_FILE}`,
+      '-t',
+      '0',
     ]);
 
   await test('initial backup', async () => {
     await execBackup();
+
+    assert(
+      !existsSync(`./${TEST_NAME}/extra`),
+      'unselected tasks should not be executed',
+    );
 
     const destinationStructure = await getFileStructure(
       `./${TEST_NAME}/dest`,
@@ -86,6 +101,11 @@ test(TEST_NAME, async () => {
     await rm(`./${TEST_NAME}/dest/foo/file-2.txt`);
 
     await execBackup();
+
+    assert(
+      !existsSync(`./${TEST_NAME}/extra`),
+      'unselected tasks should not be executed',
+    );
 
     const newDestinationStructure = await getFileStructure(
       `./${TEST_NAME}/dest`,
