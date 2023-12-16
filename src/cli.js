@@ -28,6 +28,12 @@ program
     help: `The Path to the config file.\nDefault: ${DEFAULT_CONFIG_FILE}`,
   })
   .option({
+    name: '--tasks',
+    alias: '-t',
+    value: '<identities...>',
+    help: 'Tasks to execute.\nDefault: execute all tasks',
+  })
+  .option({
     name: '--encoding',
     alias: '-e',
     value: '<enc>',
@@ -55,9 +61,10 @@ program
     );
     const config = await readConfigFile(configPath, encoding);
     const base = path.dirname(configPath);
+    const selectedTasks = options.get('--tasks');
     const tasksPrinterName = options.has('--json') ? 'json' : 'simple';
 
-    await executeBackup({ config, base, tasksPrinterName });
+    await executeBackup({ config, base, selectedTasks, tasksPrinterName });
   })
   .catch((reason) => {
     console.error(reason);

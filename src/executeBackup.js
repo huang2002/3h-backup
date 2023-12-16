@@ -17,6 +17,7 @@ import { printTasks } from './printTasks.js';
  * @property {import('./type.js').BackupConfig} config
  * @property {string} base
  * @property {string} [tasksPrinterName]
+ * @property {string[]} [selectedTasks]
  */
 
 /**
@@ -33,11 +34,21 @@ export const executeBackup = async (options) => {
   const defaultRemoveEmptyDirectory =
     config.removeEmptyDirectory ?? DEFAULT_REMOVE_EMPTY_DIRECTORY;
 
+  const { selectedTasks } = options;
+  const allTasks = selectedTasks
+    ? config.tasks.filter(
+        (task, index) =>
+          (typeof task.name === 'string' &&
+            selectedTasks.includes(task.name)) ||
+          selectedTasks.includes(index.toFixed()),
+      )
+    : config.tasks;
+
   /**
    * @type {import('./type.js').BackupTask[]}
    */
   const tasks = await Promise.all(
-    config.tasks.map((taskConfig, index) =>
+    allTasks.map((taskConfig, index) =>
       generateTask({
         defaultName: `Task#${index}`,
         config: taskConfig,

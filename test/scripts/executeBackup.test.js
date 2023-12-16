@@ -47,13 +47,20 @@ test(TEST_NAME, async () => {
         skipConfirm: true,
         tasks: [
           {
+            name: 't@5k',
             source: 'src',
             destination: 'dest',
+            filter: 'union',
+          },
+          {
+            source: 'src',
+            destination: 'backup',
             filter: 'union',
           },
         ],
       },
       base: TEST_NAME,
+      selectedTasks: ['t@5k'],
     });
 
   await test('initial backup', async () => {
