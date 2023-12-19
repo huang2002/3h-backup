@@ -119,4 +119,9 @@ test(TEST_NAME, async () => {
       },
     });
   });
+
+  await test('no-op backup', async () => {
+    const output = await execBackup();
+    assert.strictEqual(output, 'Backup up to date.\n');
+  });
 });

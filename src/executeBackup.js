@@ -62,15 +62,16 @@ export const executeBackup = async (options) => {
     ),
   );
 
+  const totalCount = tasks.reduce((sum, task) => sum + task.operationCount, 0);
+  if (totalCount === 0) {
+    console.log('Backup up to date.');
+    return true;
+  }
+
   if (!config.skipConfirm) {
     const tasksPrinterName = options.tasksPrinterName ?? DEFAULT_TASKS_PRINTER;
     printTasks(tasks, tasksPrinterName);
     console.log();
-
-    const totalCount = tasks.reduce(
-      (sum, task) => sum + task.operationCount,
-      0,
-    );
 
     const readline = createInterface({
       input: process.stdin,
