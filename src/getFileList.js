@@ -4,7 +4,7 @@ import glob from 'fast-glob';
 import path from 'node:path';
 
 /**
- * @typedef GetBackupListOptions
+ * @typedef GetFileListOptions
  * @property {readonly string[]} listFiles
  * @property {BufferEncoding} encoding
  * @property {string} root
@@ -12,7 +12,7 @@ import path from 'node:path';
 
 /**
  * @param {string} prefix
- * @param {GetBackupListOptions} options
+ * @param {GetFileListOptions} options
  * @param {string[]} [output]
  * @returns {Promise<string[]>} accumulated paths, relative to `root`
  */
