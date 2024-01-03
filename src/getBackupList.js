@@ -52,21 +52,21 @@ export const getBackupList = async (options) => {
   /**
    * @type {readonly string[]}
    */
-  let filePathList;
+  let resultList;
   switch (options.filter) {
     case 'source': {
-      filePathList = sourceList;
+      resultList = sourceList;
       break;
     }
 
     case 'destination': {
-      filePathList = destinationList;
+      resultList = destinationList;
       break;
     }
 
     case 'intersection': {
       const destinationSet = new Set(destinationList);
-      filePathList = sourceList.filter((filePath) =>
+      resultList = sourceList.filter((filePath) =>
         destinationSet.has(filePath),
       );
       break;
@@ -74,12 +74,12 @@ export const getBackupList = async (options) => {
 
     case 'union': {
       const destinationSet = new Set(destinationList);
-      filePathList = destinationList
-        .concat(sourceList.filter((filePath) => !destinationSet.has(filePath)))
+      resultList = destinationList
+        .concat(sourceList.filter((path) => !destinationSet.has(path)))
         .sort();
       break;
     }
   }
 
-  return filePathList;
+  return resultList;
 };
