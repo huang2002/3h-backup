@@ -17,37 +17,37 @@ import path from 'node:path';
  * @returns {Promise<string[]>} accumulated paths, relative to `root`
  */
 export const getFileList = async (prefix, options, output) => {
-    const basePath = path.join(options.root, prefix);
-    if ((await fs.stat(basePath)).isFile()) {
-        if (output) {
-            output.push(basePath);
-            return output;
-        } else {
-            return [basePath];
-        }
+  const basePath = path.join(options.root, prefix);
+  if ((await fs.stat(basePath)).isFile()) {
+    if (output) {
+      output.push(basePath);
+      return output;
+    } else {
+      return [basePath];
     }
+  }
 
-    const listPatterns = await readListFile(
-        basePath,
-        options.listFiles,
-        options.encoding,
-    );
-    const matchedEntries = await glob(listPatterns, {
-        cwd: basePath,
-        deep: 1,
-        onlyFiles: false,
-        markDirectories: true,
-    });
+  const listPatterns = await readListFile(
+    basePath,
+    options.listFiles,
+    options.encoding,
+  );
+  const matchedEntries = await glob(listPatterns, {
+    cwd: basePath,
+    deep: 1,
+    onlyFiles: false,
+    markDirectories: true,
+  });
 
-    const _output = output ?? [];
-    for await (const entryName of matchedEntries) {
-        const entryPath = path.join(prefix, entryName);
-        if (entryName.endsWith('/')) {
-            await getFileList(entryPath, options, _output);
-        } else {
-            _output.push(entryPath);
-        }
+  const _output = output ?? [];
+  for await (const entryName of matchedEntries) {
+    const entryPath = path.join(prefix, entryName);
+    if (entryName.endsWith('/')) {
+      await getFileList(entryPath, options, _output);
+    } else {
+      _output.push(entryPath);
     }
+  }
 
-    return _output;
+  return _output;
 };
