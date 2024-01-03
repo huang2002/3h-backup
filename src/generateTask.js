@@ -1,5 +1,5 @@
 import path from 'node:path';
-import { getFileList } from './getFileList.js';
+import { getBackupList } from './getBackupList.js';
 import { existsSync } from 'node:fs';
 import { BackupError } from './type.js';
 import { getAction } from './getAction.js';
@@ -36,75 +36,15 @@ export const generateTask = async (options) => {
     const removeEmptyDirectory =
         config.removeEmptyDirectory ?? options.defaultRemoveEmptyDirectory;
 
-    const sourceList = await getFileList('', {
-        root: sourcePath,
+    let operationCount = 0;
+    const filePathList = await getBackupList({
+        sourcePath,
+        destinationPath,
         listFiles: options.listFiles,
         encoding: options.encoding,
+        replace,
+        filter,
     });
-    sourceList.sort();
-
-    /**
-     * @type {string[]}
-     */
-    const destinationList = [];
-    if (filter !== 'source' || replace !== 'all') {
-        if (!existsSync(destinationPath)) {
-            if (filter === 'destination') {
-                throw new BackupError(
-                    'Destination path does not exists: ' + destinationPath,
-                );
-            }
-        } else {
-            await getFileList(
-                '',
-                {
-                    root: destinationPath,
-                    listFiles: options.listFiles,
-                    encoding: options.encoding,
-                },
-                destinationList,
-            );
-            destinationList.sort();
-        }
-    }
-
-    /**
-     * @type {readonly string[]}
-     */
-    let filePathList;
-    switch (filter) {
-        case 'source': {
-            filePathList = sourceList;
-            break;
-        }
-
-        case 'destination': {
-            filePathList = destinationList;
-            break;
-        }
-
-        case 'intersection': {
-            const destinationSet = new Set(destinationList);
-            filePathList = sourceList.filter((filePath) =>
-                destinationSet.has(filePath),
-            );
-            break;
-        }
-
-        case 'union': {
-            const destinationSet = new Set(destinationList);
-            filePathList = destinationList
-                .concat(
-                    sourceList.filter(
-                        (filePath) => !destinationSet.has(filePath),
-                    ),
-                )
-                .sort();
-            break;
-        }
-    }
-
-    let operationCount = 0;
     const fileList = await Promise.all(
         filePathList.map(async (filePath) => {
             const source = path.join(sourcePath, filePath);
